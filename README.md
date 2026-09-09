@@ -199,3 +199,10 @@ license to you.
 
 Deltron 3030 — Del the Funky Homosapien, Dan the Automator, Kid Koala.
 Go buy the album. It's better than this.
+
+**[deltron3030.com](https://deltron3030.com/)** — the official site. Tour
+dates, music, merch. They are playing shows again, which is a better use of
+an evening than any of this.
+
+Still not affiliated with them in any way. Just pointing at the people who
+made the thing worth making a joke about.
