@@ -53,8 +53,10 @@ def type_out(s, cps=45, end="\n"):
 
 
 def lyrics():
+    """The verse. '#' lines are notes to whoever edits the file, not lyrics --
+    act 4 scrolls this onto the papyrus, so they must not end up on it."""
     with open(os.path.join(HERE, "lyrics.txt"), encoding="utf-8") as f:
-        return [line.rstrip("\n") for line in f]
+        return [ln.rstrip() for ln in f if not ln.lstrip().startswith("#")]
 
 
 # --- audio -----------------------------------------------------------------
@@ -190,6 +192,7 @@ def demo():
     assert f"[{BOMB_N:>5}]" in out, "act 3 (bomb) never reached the counter"
     assert "~" * 8 in out, "act 4 (papyrus) did not fill the screen"
     assert lyrics()[0] in out, "act 4 (papyrus) did not scroll the lyrics"
+    assert not any(l.startswith("#") for l in lyrics()), "build notes on the scroll"
     assert out.endswith(SHOW + "\n"), "terminal was not restored"
     print("ok: 4 acts, terminal restored, 0 files harmed")
 

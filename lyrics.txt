@@ -5,5 +5,6 @@ and revert you to papyrus
 
 -- Deltron 3030, "Virus" (2000)
 
-ponytail: paste the rest of the verse here if you want it.
-Excerpt only, on purpose -- see SPEC.md non-goals.
+# Lines starting with '#' are not scrolled onto the papyrus.
+# Excerpt only, on purpose -- see the Notice in README.md.
+# Paste the rest of the verse here if you want it; act 4 reads this file.
