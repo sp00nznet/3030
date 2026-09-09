@@ -129,9 +129,9 @@ different angles, and each one is a small terminal program:
 | The News | `news.py` — the ownership disclosure outgrows the story |
 | Memory Loss | `memory.py` — memory climbs while the work description erodes |
 | Positive Contact | `contact.py` — finds life, files the mineral rights, never replies |
-| New Coke | a rebrand that migrates nothing. Not built |
-| Battlesong | two algorithms benchmarked as a battle. Not built |
-| Madness | a fuzzer that reports everything as passing. Not built |
+| New Coke | `newcoke.py` — a rebrand that ends with two products instead of one |
+| Battlesong | `battlesong.py` — two sorts, six rounds, real timings, settled in round one |
+| Madness | `madness.py` — real hostile inputs, an oracle that cannot fail |
 
 **One repo, one file per track.** No repo per song, no package per song.
 `virus.py` keeps its name — it's track 7, not the project.

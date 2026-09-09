@@ -137,6 +137,25 @@ python upgrade.py --rollback   # the truest line in the program
 `virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
 kept to the letter that means nothing. Same joke from the other end.
 
+### 9. New Coke — `newcoke.py`
+
+A rebrand. It renames the product, migrates almost nothing, and ends with two
+products instead of one, forever.
+
+```
+  brands                    1  ->  2
+  products                  1  ->  2
+  support queues            1  ->  2
+  things anyone asked for   0  ->  0
+
+  Ubiquitous Classic is available from today.
+  You now maintain both. Forever.
+```
+
+Sibling to `upgrade.py`: that one is a change that changes nothing, this one
+is a change that doubles what it touched. 50 references renamed, 837 not —
+including the URL, the schema, the legal entity, and what customers call it.
+
 ### 10. Mastermind — `mastermind.py`
 
 A lock on the corporate tower and ten tries at it. Six glyphs, four slots,
@@ -153,6 +172,22 @@ python mastermind.py --seed 7   # the same lock every time
 The one program here that is a real game, with logic you can lose to. The
 rest of the album is theater; this one keeps score. A malformed guess is a
 typo, not an attempt, and does not cost you one.
+
+### 12. Madness — `madness.py`
+
+A fuzzer. The inputs are genuinely hostile — nul bytes, `2**63`, NaN,
+`'; DROP TABLE --`, an RTL override, 2038 timestamps. Ten thousand cases,
+zero failures. Then it shows you the assertion:
+
+```
+      def check(value):
+          return True
+```
+
+The inputs are real. The oracle is the problem, which is the point: a suite
+that cannot fail is not a suite, it is a decoration. The self-check asserts
+that `check()` still cannot fail, so nobody quietly gives it teeth and turns
+this into a different program.
 
 ### 14. Time Keeps On Slipping — `slipping.py`
 
@@ -211,6 +246,24 @@ network module is loaded, and no hostname could resolve.
 
 It ends on `0 packets sent. 0 packets received. None of this happened.`
 
+### 18. Battlesong — `battlesong.py`
+
+Two sorting algorithms, six rounds, one judge. The battle is real: both
+contenders actually sort and the times are measured, not invented.
+
+```
+  round 1  n=200   bubble      1.0ms   timsort   0.02ms   x62
+  round 6  n=2000  bubble    107.0ms   timsort   0.14ms   x772
+  RESULT  timsort 6 - 0 bubble
+```
+
+The joke is not who wins. It is that the outcome is settled in round one and
+we run all six anyway, with the loser's boasts getting longer as the margin
+widens. That x62 → x772 is measured O(n²) against O(n log n). Both answers
+are identical every round, which the self-check enforces — a rigged benchmark
+would not be funny.
+
+
 ### 20. Memory Loss — `memory.py`
 
 Memory climbs. The description of what it is doing gets shorter. By the end
@@ -229,7 +282,6 @@ python memory.py
 
 The banner forgets its own name on the same slope. Nothing is actually
 allocated; the number is a number. It ends on `0 freed. I don't remember why.`
-
 ## The safety rails, since one of these is called `virus`
 
 - No writes outside this repo. **None.** Nothing is created, so there is
