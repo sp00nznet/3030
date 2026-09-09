@@ -17,6 +17,7 @@ worse idea than a convincing fake virus. The self-check asserts both.
 import random
 import sys
 import time
+import types
 
 from theater import CLEAR, EOL, ESC, HIDE, HOME, RESET, nap, restore, w
 
@@ -114,9 +115,17 @@ def main(speed=1.0, seed=0):
 
 def demo():
     # The important one: this program cannot reach anything.
-    reachable = [m for m in ("socket", "ssl", "http", "urllib", "asyncio",
-                             "subprocess", "requests") if m in sys.modules]
-    assert not reachable, f"turbulence must not touch the network, found {reachable}"
+    NET = {"socket", "ssl", "http", "urllib", "asyncio", "subprocess", "requests"}
+    mine = {v.__name__.split(".")[0] for v in globals().values()
+            if isinstance(v, types.ModuleType)}
+    assert not (NET & mine), f"turbulence must not import {sorted(NET & mine)}"
+    if not getattr(sys, "frozen", False):
+        # A source run should have none of them loaded at all. Frozen is
+        # different: PyInstaller's own bootloader imports urllib and
+        # subprocess before this file runs, so process-wide is the wrong
+        # scope there -- what matters is that *this file* imports none.
+        loaded = NET & set(sys.modules)
+        assert not loaded, f"something pulled in {sorted(loaded)}"
     assert all(h.endswith(".3030") for h, _ in HOPS + [DETOUR]), "hosts must be unresolvable"
 
     assert weather(0) == 0.0 and weather(LOST_AT) == 1.0, "weather runs 0 to 1"

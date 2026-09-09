@@ -18,6 +18,9 @@ import sys
 # (module, track no., title, one line)
 TRACKS = [
     ("y3k", 2, "3030", "a Y3K compliance checker. The only one that does something real"),
+    ("things", 4, "Things You Can Do", "a capability list. Everything on it is unavailable"),
+    ("news", 15, "The News", "the disclosure outgrows the story, then closes on itself"),
+    ("memory", 20, "Memory Loss", "memory climbs, the description of the work erodes"),
     ("virus", 7, "Virus", "a threat that cannot be carried out"),
     ("mastermind", 10, "Mastermind", "a lock, ten tries. The one that keeps score"),
     ("slipping", 14, "Time Keeps On Slipping", "a clock that is correct for about a minute"),

@@ -26,18 +26,19 @@ jobs:
         shell: bash
         run: |
           SEP=":"; [ "${{ runner.os }}" = "Windows" ] && SEP=";"
-          # runpy loads the tracks by name, so PyInstaller cannot see them statically
+          # runpy loads the tracks by name, so PyInstaller cannot see them
+          # statically. Built from what is on disk rather than a hand-kept
+          # list, which drifted every time a track was added.
+          HID=""
+          for f in *.py; do
+            m="${f%.py}"
+            [ "$m" = "deltron" ] || HID="$HID --hidden-import $m"
+          done
+          echo "bundling:$HID"
           pyinstaller --onefile --name deltron \
             --add-data "lyrics.txt${SEP}." \
             --add-data "changelog.txt${SEP}." \
-            --hidden-import virus \
-            --hidden-import upgrade \
-            --hidden-import y3k \
-            --hidden-import mastermind \
-            --hidden-import slipping \
-            --hidden-import turbulence \
-            --hidden-import music \
-            deltron.py
+            $HID deltron.py
       - name: smoke test the binary
         shell: bash
         run: |

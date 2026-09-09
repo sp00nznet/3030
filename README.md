@@ -40,6 +40,21 @@ Exits 1 on findings, so it works in CI, which is an absurd thing for this
 repo to be able to say. `y3k: ignore` on a line skips it;
 `y3k: ignore-start` / `-end` skips a block.
 
+### 4. Things You Can Do — `things.py`
+
+A capability list. Everything on it is unavailable.
+
+```bash
+python things.py            # the list
+python things.py 17         # attempt one of them
+python things.py --all      # attempt all of them
+```
+
+The help text is the entire product. Every reason is one a real product has
+given someone: `available on the Enterprise plan`, `requires the mobile app`,
+`removed in v3030.2`, `you are speaking to a person`. `--all` exits 1,
+because zero of twenty available is a failure by any honest measure.
+
 ### 7. Virus — `virus.py`
 
 Somebody had to try. Four acts: a fake boot, the impossible requirements
@@ -128,6 +143,28 @@ python slipping.py --drift 4   # slip sooner (time constant, seconds)
 `--drift` is the calibration knob. The default is tuned so the slip stays
 invisible exactly long enough to be annoying.
 
+### 15. The News — `news.py`
+
+A broadcast where the ownership disclosure is longer than the story, and gets
+longer with every story, until the chain closes on itself.
+
+```bash
+python news.py
+```
+
+```
+  Broadcast licence renewed. No other bids were possible.
+    a wholly owned subsidiary of Ubiquitous Media
+      a wholly owned subsidiary of Vandal Broadcast Group
+        ...
+              a wholly owned subsidiary of an algorithm nobody has read
+                a wholly owned subsidiary of itself
+```
+
+The title was already the whole program. All that was left was to run the
+disclosure to its logical end. Every company named is invented — the joke is
+the structure, not any real one.
+
 ### 16. Turbulence — `turbulence.py`
 
 A route to the tower, degrading in front of you. Latency climbs, hops start
@@ -147,6 +184,25 @@ worse idea than a convincing fake virus. The self-check asserts both: no
 network module is loaded, and no hostname could resolve.
 
 It ends on `0 packets sent. 0 packets received. None of this happened.`
+
+### 20. Memory Loss — `memory.py`
+
+Memory climbs. The description of what it is doing gets shorter. By the end
+it is using a gigabyte and cannot tell you what for.
+
+```bash
+python memory.py
+```
+
+```
+  MEMORY LOSS v3030.1   Reticulating splines in sector 7 (batch 3 of 12)     84 MiB
+  MEMORY LOSS           Reticulating                                        194 MiB
+  MEM                   Working                                             590 MiB
+                        ...                                               1,028 MiB
+```
+
+The banner forgets its own name on the same slope. Nothing is actually
+allocated; the number is a number. It ends on `0 freed. I don't remember why.`
 
 ## The safety rails, since one of these is called `virus`
 

@@ -125,6 +125,13 @@ different angles, and each one is a small terminal program:
 | Time Keeps On Slipping | `slipping.py` — a clock that drifts, exponentially, into 3030 |
 | Mastermind | `mastermind.py` — the deduction game, dressed as a lock on the tower |
 | Turbulence | `turbulence.py` — a route to the tower, degrading. Reaches nothing, by design |
+| Things You Can Do | `things.py` — a capability list where nothing is available |
+| The News | `news.py` — the ownership disclosure outgrows the story |
+| Memory Loss | `memory.py` — memory climbs while the work description erodes |
+| Positive Contact | a SETI screensaver that finds life and immediately files a claim. Not built |
+| New Coke | a rebrand that migrates nothing. Not built |
+| Battlesong | two algorithms benchmarked as a battle. Not built |
+| Madness | a fuzzer that reports everything as passing. Not built |
 
 **One repo, one file per track.** No repo per song, no package per song.
 `virus.py` keeps its name — it's track 7, not the project.
