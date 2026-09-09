@@ -11,7 +11,7 @@ a terminal.
 
 So: the album, as command-line programs. One file per track.
 
-![demo](docs/demo.gif)
+![the tracklist](docs/tracklist.gif)
 
 ```bash
 python deltron.py            # the tracklist
@@ -22,52 +22,6 @@ python deltron.py --check    # every self-check in the repo
 Stdlib only. Python 3.8+. No pip install, no venv, nothing to uninstall.
 
 ## The tracklist
-
-### 5. Virus — `virus.py`
-
-Somebody had to try. Four acts: a fake boot, the impossible requirements
-failing deadpan, a Win95 folder bomb **rendered rather than executed**, and a
-terminal that slowly fills with papyrus until it is a scroll.
-
-It does **nothing** to your computer. That is the joke — the honest
-implementation of the entire verse is one `print()`, and this is four hundred
-lines instead.
-
-```bash
-python virus.py            # ~45s, bassline on
-python virus.py --fast     # two seconds
-```
-
-### 12. Upgrade (A Brand New Day) — `upgrade.py`
-
-An upgrade process that is flawless, thorough, patient, beautifully
-instrumented, and changes nothing. A changelog of filler. An ETA that gets
-worse before it gets better. Config migrated into itself. A restart into the
-identical screen. The version goes up, the feature count goes down, and the
-last line is `0 files changed`, which is a true statement about the program
-rather than a bit.
-
-```bash
-python upgrade.py --rollback   # the truest line in the program
-```
-
-`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
-kept to the letter that means nothing. Same joke from the other end.
-
-### 10. Time Keeps On Slipping — `slipping.py`
-
-A clock that is correct when it starts and is not correct for long. The drift
-is exponential, so the first half minute looks fine, a minute in you are a
-couple of minutes fast, three minutes in you are weeks ahead, and around
-minute five it arrives in 3030 and stops.
-
-```bash
-python slipping.py             # ~5 min to 3030
-python slipping.py --drift 4   # slip sooner (time constant, seconds)
-```
-
-`--drift` is the calibration knob. The default is tuned so the slip stays
-invisible exactly long enough to be annoying.
 
 ### 2. 3030 — `y3k.py`
 
@@ -86,11 +40,50 @@ Exits 1 on findings, so it works in CI, which is an absurd thing for this
 repo to be able to say. `y3k: ignore` on a line skips it;
 `y3k: ignore-start` / `-end` skips a block.
 
+### 5. Virus — `virus.py`
+
+Somebody had to try. Four acts: a fake boot, the impossible requirements
+failing deadpan, a Win95 folder bomb **rendered rather than executed**, and a
+terminal that slowly fills with papyrus until it is a scroll.
+
+It does **nothing** to your computer. That is the joke — the honest
+implementation of the entire verse is one `print()`, and this is four hundred
+lines instead.
+
+![virus](docs/virus.gif)
+
+```bash
+python virus.py            # ~45s, bassline on
+python virus.py --fast     # two seconds
+```
+
+#### The spec review, for that one verse
+
+Before writing it we triaged the requirements. The client is Del. The spec
+is a rap verse.
+
+| Requirement | Verdict |
+|---|---|
+| "bring dire straits to your environment" | a mood, not a spec |
+| "revert you to papyrus" | closest real behavior is *paperweight*. off by one material |
+| "no Microsoft or Windows when I'm through" | you cannot uninstall a corporation |
+| "a file gets deleted / Bingo! hard drive" | this is `del`. shipped 1981. **Del invented Del** |
+| "shut down the entire whitehouse" | air-gapped |
+| "corrupt politicians" | no-op, idempotent |
+| "even space stations" | 400ms RTT, custom RTOS, they'd notice |
+| "3030" | a thousand years of forward compat. a millennium LTS |
+
+Exactly one line in the verse describes a real mechanism: **replication**.
+The Win95 folder bomb — not clever, just `mkdir` in a loop until Explorer
+gave up. So that is the one we perform, and we perform it as theater.
+
 ### 6. Mastermind — `mastermind.py`
 
 A lock on the corporate tower and ten tries at it. Six glyphs, four slots,
 repeats allowed; after each attempt the panel says how many glyphs are in the
 right slot and how many are right but somewhere else.
+
+![mastermind](docs/mastermind.gif)
 
 ```bash
 python mastermind.py            # play
@@ -101,11 +94,28 @@ The one program here that is a real game, with logic you can lose to. The
 rest of the album is theater; this one keeps score. A malformed guess is a
 typo, not an attempt, and does not cost you one.
 
+### 10. Time Keeps On Slipping — `slipping.py`
+
+A clock that is correct when it starts and is not correct for long. The drift
+is exponential, so the first half minute looks fine, a minute in you are a
+couple of minutes fast, three minutes in you are weeks ahead, and around
+minute five it arrives in 3030 and stops.
+
+```bash
+python slipping.py             # ~5 min to 3030
+python slipping.py --drift 4   # slip sooner (time constant, seconds)
+```
+
+`--drift` is the calibration knob. The default is tuned so the slip stays
+invisible exactly long enough to be annoying.
+
 ### 11. Turbulence — `turbulence.py`
 
 A route to the tower, degrading in front of you. Latency climbs, hops start
 starring out, the path flaps between two routes that are both wrong, and then
 there is no route at all.
+
+![turbulence](docs/turbulence.gif)
 
 ```bash
 python turbulence.py             # ~35s to total loss
@@ -119,6 +129,25 @@ network module is loaded, and no hostname could resolve.
 
 It ends on `0 packets sent. 0 packets received. None of this happened.`
 
+
+### 12. Upgrade (A Brand New Day) — `upgrade.py`
+
+An upgrade process that is flawless, thorough, patient, beautifully
+instrumented, and changes nothing. A changelog of filler. An ETA that gets
+worse before it gets better. Config migrated into itself. A restart into the
+identical screen. The version goes up, the feature count goes down, and the
+last line is `0 files changed`, which is a true statement about the program
+rather than a bit.
+
+![upgrade](docs/upgrade.gif)
+
+```bash
+python upgrade.py              # ~40s
+python upgrade.py --rollback   # the truest line in the program
+```
+
+`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
+kept to the letter that means nothing. Same joke from the other end.
 ## The safety rails, since one of these is called `virus`
 
 - No writes outside this repo. **None.** Nothing is created, so there is
@@ -136,27 +165,9 @@ before it gets better, that `This will only take a moment` is the longest
 step, that the clock is correct at zero seconds, that the post-upgrade banner
 comes back **unchanged**.
 
-## The spec review
-
-Before writing any of it we triaged the requirements. The client is Del. The
-spec is a rap verse.
-
-| Requirement | Verdict |
-|---|---|
-| "bring dire straits to your environment" | a mood, not a spec |
-| "revert you to papyrus" | closest real behavior is *paperweight*. off by one material |
-| "no Microsoft or Windows when I'm through" | you cannot uninstall a corporation |
-| "a file gets deleted / Bingo! hard drive" | this is `del`. shipped 1981. **Del invented Del** |
-| "shut down the entire whitehouse" | air-gapped |
-| "corrupt politicians" | no-op, idempotent |
-| "even space stations" | 400ms RTT, custom RTOS, they'd notice |
-| "3030" | a thousand years of forward compat. a millennium LTS |
-
-Exactly one line in the verse describes a real mechanism: **replication**.
-The Win95 folder bomb — not clever, just `mkdir` in a loop until Explorer
-gave up. So that is the one we perform, and we perform it as theater.
-
 ## The music
+
+`virus.py` and `upgrade.py` are the two that make noise.
 
 `winsound.Beep` on a daemon thread. A four-note riff at 90bpm that sounds
 like a 1997 shareware installer, which is the correct sound for this. Windows
@@ -180,7 +191,7 @@ y3k.py         track 2
 music.py       writes virus.mid
 lyrics.txt     act 4 of virus scrolls whatever is in here
 changelog.txt  the filler upgrade.py reads
-docs/demo.py   makes the GIF above, with termshot
+docs/demos.py  makes every image above, with termshot
 ```
 
 `theater.py` was extracted at the **fourth** track, not the first — three
@@ -188,9 +199,16 @@ programs had grown their own copy by then, which is when you know what the
 shared thing actually is. The third track (`y3k.py`) turned out not to want
 it at all, being a linter rather than an animation.
 
-The GIF is not a screen recording — it is
+None of the images are screen recordings. They are
 [termshot](https://github.com/sp00nznet/termshot), which fakes terminal
-captures with Pillow. Faking a demo of a fake virus felt correct.
+captures with Pillow — faking demos of programs that are themselves fakes
+felt correct. Mastermind's demo scores its guesses with the real `score()`
+from `mastermind.py`, so the feedback in the GIF cannot drift into something
+the game would never print.
+
+`slipping` and `y3k` have no image on purpose: slipping's joke is five
+minutes long and a GIF cannot hold it, and y3k prints a static report that
+reads better as the text above than as a picture of text.
 
 ## Binaries
 
