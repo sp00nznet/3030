@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""UPGRADE (A Brand New Day) -- Deltron 3030, track 12. See SPEC-upgrade.md.
+"""UPGRADE (A Brymar College Course) -- Deltron 3030, track 8. See SPEC-upgrade.md.
 
 Upgrades nothing. Perfectly. The version number goes up; that is the delta.
 
@@ -33,6 +33,7 @@ WARN = ESC + "38;5;214m"
 FROM_V, TO_V = "v3030.1", "v3030.2"
 FEATURES_BEFORE, FEATURES_AFTER = 47, 46
 SIZE = "1,204 MiB"
+
 
 def changelog():
     """'#' lines are notes to whoever edits the file, not changelog entries."""
@@ -179,7 +180,7 @@ def act_restart():
         nap(0.5)
     w("\n  " + DIM + "0 files changed, 0 insertions(+), 0 deletions(-)" + RESET + "\n\n")
     nap(1.2)
-    type_out("  " + WHITE + "A brand new day." + RESET, 12)
+    type_out("  " + WHITE + "You are current." + RESET, 12)
     nap(1.0)
 
 
@@ -211,7 +212,7 @@ def demo():
     assert TO_V in out and "is available" in out, "act 1 (check) did not run"
     assert "100%" in out and "3 MiB of it is new" in out, "act 2 (download) did not finish"
     assert all(label in out for label, _, _ in STEPS), "act 3 (migrate) dropped a step"
-    assert "UPGRADE COMPLETE" in out and "A brand new day." in out, "act 4 (restart) did not run"
+    assert "UPGRADE COMPLETE" in out and "You are current." in out, "act 4 (restart) did not run"
     # The post-restart banner still reads "installed: v3030.1" while the summary
     # under it claims v3030.2. That contradiction is the joke, not a bug. Do not
     # "fix" the banner.

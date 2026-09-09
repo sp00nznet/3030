@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MASTERMIND -- Deltron 3030, track 6. See SPEC.md.
+"""MASTERMIND -- Deltron 3030, track 10. See SPEC.md.
 
 A lock on the corporate tower, and you have ten tries. Six glyphs, four
 slots, repeats allowed. After each attempt the panel tells you how many

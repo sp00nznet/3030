@@ -120,14 +120,14 @@ different angles, and each one is a small terminal program:
 | Track | Program |
 |---|---|
 | Virus | `virus.py` — a threat that cannot be carried out |
-| Upgrade (A Brand New Day) | `upgrade.py` — a promise kept to the letter, meaning nothing. See [SPEC-upgrade.md](SPEC-upgrade.md) |
+| Upgrade (A Brymar College Course) | `upgrade.py` — a promise kept to the letter, meaning nothing. See [SPEC-upgrade.md](SPEC-upgrade.md) |
 | 3030 | `y3k.py` — a Y3K compliance checker. The only one that is faintly useful |
 | Time Keeps On Slipping | `slipping.py` — a clock that drifts, exponentially, into 3030 |
 | Mastermind | `mastermind.py` — the deduction game, dressed as a lock on the tower |
 | Turbulence | `turbulence.py` — a route to the tower, degrading. Reaches nothing, by design |
 
 **One repo, one file per track.** No repo per song, no package per song.
-`virus.py` keeps its name — it's track 5, not the project.
+`virus.py` keeps its name — it's track 7, not the project.
 
 **The repo gets renamed to `3030`** once enough tracks exist to earn it.
 GitHub redirects the old URL, remotes, and release assets, so the rename is

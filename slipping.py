@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""TIME KEEPS ON SLIPPING -- Deltron 3030, track 10. See SPEC.md.
+"""TIME KEEPS ON SLIPPING -- Deltron 3030, track 14. See SPEC.md.
 
 A clock. It is correct when it starts. It is not correct for long.
 

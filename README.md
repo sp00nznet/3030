@@ -40,7 +40,7 @@ Exits 1 on findings, so it works in CI, which is an absurd thing for this
 repo to be able to say. `y3k: ignore` on a line skips it;
 `y3k: ignore-start` / `-end` skips a block.
 
-### 5. Virus — `virus.py`
+### 7. Virus — `virus.py`
 
 Somebody had to try. Four acts: a fake boot, the impossible requirements
 failing deadpan, a Win95 folder bomb **rendered rather than executed**, and a
@@ -77,7 +77,26 @@ Exactly one line in the verse describes a real mechanism: **replication**.
 The Win95 folder bomb — not clever, just `mkdir` in a loop until Explorer
 gave up. So that is the one we perform, and we perform it as theater.
 
-### 6. Mastermind — `mastermind.py`
+### 8. Upgrade (A Brymar College Course) — `upgrade.py`
+
+An upgrade process that is flawless, thorough, patient, beautifully
+instrumented, and changes nothing. A changelog of filler. An ETA that gets
+worse before it gets better. Config migrated into itself. A restart into the
+identical screen. The version goes up, the feature count goes down, and the
+last line is `0 files changed`, which is a true statement about the program
+rather than a bit.
+
+![upgrade](docs/upgrade.gif)
+
+```bash
+python upgrade.py              # ~40s
+python upgrade.py --rollback   # the truest line in the program
+```
+
+`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
+kept to the letter that means nothing. Same joke from the other end.
+
+### 10. Mastermind — `mastermind.py`
 
 A lock on the corporate tower and ten tries at it. Six glyphs, four slots,
 repeats allowed; after each attempt the panel says how many glyphs are in the
@@ -94,7 +113,7 @@ The one program here that is a real game, with logic you can lose to. The
 rest of the album is theater; this one keeps score. A malformed guess is a
 typo, not an attempt, and does not cost you one.
 
-### 10. Time Keeps On Slipping — `slipping.py`
+### 14. Time Keeps On Slipping — `slipping.py`
 
 A clock that is correct when it starts and is not correct for long. The drift
 is exponential, so the first half minute looks fine, a minute in you are a
@@ -109,7 +128,7 @@ python slipping.py --drift 4   # slip sooner (time constant, seconds)
 `--drift` is the calibration knob. The default is tuned so the slip stays
 invisible exactly long enough to be annoying.
 
-### 11. Turbulence — `turbulence.py`
+### 16. Turbulence — `turbulence.py`
 
 A route to the tower, degrading in front of you. Latency climbs, hops start
 starring out, the path flaps between two routes that are both wrong, and then
@@ -129,25 +148,6 @@ network module is loaded, and no hostname could resolve.
 
 It ends on `0 packets sent. 0 packets received. None of this happened.`
 
-
-### 12. Upgrade (A Brand New Day) — `upgrade.py`
-
-An upgrade process that is flawless, thorough, patient, beautifully
-instrumented, and changes nothing. A changelog of filler. An ETA that gets
-worse before it gets better. Config migrated into itself. A restart into the
-identical screen. The version goes up, the feature count goes down, and the
-last line is `0 files changed`, which is a true statement about the program
-rather than a bit.
-
-![upgrade](docs/upgrade.gif)
-
-```bash
-python upgrade.py              # ~40s
-python upgrade.py --rollback   # the truest line in the program
-```
-
-`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
-kept to the letter that means nothing. Same joke from the other end.
 ## The safety rails, since one of these is called `virus`
 
 - No writes outside this repo. **None.** Nothing is created, so there is
@@ -182,11 +182,11 @@ original — see the Notice.
 ```
 deltron.py     the umbrella. runpy, not a plugin system
 theater.py     the shared stage: typewriter, sleeps, terminal restore
-virus.py       track 5
-mastermind.py  track 6
-upgrade.py     track 12
-slipping.py    track 10
-turbulence.py  track 11
+virus.py       track 7
+mastermind.py  track 10
+upgrade.py     track 8
+slipping.py    track 14
+turbulence.py  track 16
 y3k.py         track 2
 music.py       writes virus.mid
 lyrics.txt     act 4 of virus scrolls whatever is in here

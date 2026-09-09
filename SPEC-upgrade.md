@@ -1,6 +1,6 @@
-# UPGRADE (A Brand New Day)
+# UPGRADE (A Brymar College Course)
 
-Track 12. The sibling to `virus.py`.
+Track 8. The sibling to `virus.py`.
 
 An upgrade process that is flawless, thorough, patient, beautifully
 instrumented — and changes nothing. It downloads nothing, installs nothing,
@@ -25,8 +25,8 @@ Same as `virus.py`, and for the same reason.
 
 ## Source material
 
-The track is about the upgrade treadmill: a brand new day that is the same
-day. Everything below is a real thing software does, played straight.
+The track is about the upgrade treadmill: a course you are enrolled in
+whether or not you asked. Everything below is a real thing software does, played straight.
 
 | The move | How it renders |
 |---|---|
@@ -85,7 +85,7 @@ because that is the shape that makes the joke land:
 
   0 files changed, 0 insertions(+), 0 deletions(-)
 
-  A brand new day.
+  You are current.
 ```
 
 `--rollback` prints `Rollback is not available for this version.` and exits 1.
