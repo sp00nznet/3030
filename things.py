@@ -13,6 +13,7 @@ twenty available is a failure by any honest measure.
 """
 import sys
 
+import audio
 from theater import ESC, RESET
 
 DIM = ESC + "38;5;245m"
@@ -60,6 +61,7 @@ def listing():
 
 
 def main(argv):
+    audio.cue("things")
     picks = [a for a in argv if a.isdigit()]
     if "--all" in argv:
         picks = [str(i) for i in range(1, len(THINGS) + 1)]

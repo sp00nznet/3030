@@ -158,6 +158,11 @@ Building the umbrella immediately paid for itself: running `y3k` from another
 drive crashed on `os.path.relpath` across Windows mounts, a real bug that had
 been sitting there since the track shipped.
 
+`audio.py` came at the thirteenth track, when "sound" stopped meaning "one
+Windows beep" and started meaning a cue per program on three platforms. It
+synthesises WAV in memory rather than shipping audio files, so the repo stays
+text; `music.py` imports its note tables rather than copying them.
+
 Still not done, and still deliberate:
 
 - **No plugin registry, no entry points, no `tracks/` package.** `TRACKS` is

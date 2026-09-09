@@ -15,6 +15,7 @@ import io
 import sys
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, type_out, w
 
@@ -73,6 +74,7 @@ def broadcast():
 
 
 def main():
+    audio.cue("news")
     try:
         broadcast()
     finally:

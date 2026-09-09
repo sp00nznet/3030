@@ -17,6 +17,7 @@ import random
 import sys
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, type_out, w
 
@@ -83,6 +84,7 @@ def run(cases=CASES):
 
 
 def main(cases=CASES):
+    audio.cue("madness")
     try:
         run(cases)
     finally:

@@ -19,6 +19,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 
+import audio
 from theater import CLEAR, EOL, ESC, HIDE, HOME, RESET, restore, w
 
 TAU = 12.4          # seconds. The knob. Smaller slips sooner.
@@ -100,6 +101,7 @@ def frame(start, t, tau=TAU):
 
 
 def main(tau=TAU):
+    audio.cue("slipping")
     start, t0 = datetime.now(), time.monotonic()
     off = 0.0
     try:

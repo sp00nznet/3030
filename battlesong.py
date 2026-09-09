@@ -17,6 +17,7 @@ import sys
 import time
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, type_out, w
 
@@ -97,6 +98,7 @@ def run():
 
 
 def main():
+    audio.cue("battlesong")
     try:
         run()
     finally:

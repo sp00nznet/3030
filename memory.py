@@ -14,6 +14,7 @@ import io
 import sys
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, w
 
@@ -80,6 +81,7 @@ def run():
 
 
 def main():
+    audio.cue("memory")
     try:
         run()
     finally:

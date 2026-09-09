@@ -19,6 +19,7 @@ import sys
 sys.path.insert(0, os.environ.get("TERMSHOT", "."))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import deltron  # noqa: E402  -- the tracklist image is generated from it
 import mastermind as mm  # noqa: E402  -- the demo scores with the real scorer
 from termshot import CYAN, DIM, FG, GREEN, RED, YELLOW, Term  # noqa: E402
 
@@ -58,26 +59,21 @@ def glyphs(digits, pad="  "):
 
 # --------------------------------------------------------------------------
 def tracklist():
-    """The hero image: the album, as a menu."""
-    t = term("3030", 20)
+    """The hero image. Derived from deltron.TRACKS, so it cannot go stale --
+    the first version of this was hand-typed and still showed six tracks
+    after seven more had shipped."""
+    rows = sorted(deltron.TRACKS, key=lambda t: t[1])
+    t = term("3030", 2 * len(rows) + 6)
     t.type("deltron")
-    t.reveal([
-        None,
-        [("  DELTRON 3030", WHITE, True), ("  // the album, as command-line programs", DIM, False)],
-        None,
-        [("   2.  ", DIM, False), ("y3k         ", WHITE, True), ("3030", FG, False)],
-        [("       a Y3K compliance checker. The only one that does something real", DIM, False)],
-        [("   7.  ", DIM, False), ("virus       ", WHITE, True), ("Virus", FG, False)],
-        [("       a threat that cannot be carried out", DIM, False)],
-        [("   8.  ", DIM, False), ("upgrade     ", WHITE, True), ("Upgrade (A Brymar College Course)", FG, False)],
-        [("       a promise kept to the letter, meaning nothing", DIM, False)],
-        [("  10.  ", DIM, False), ("mastermind  ", WHITE, True), ("Mastermind", FG, False)],
-        [("       a lock, ten tries. The one that keeps score", DIM, False)],
-        [("  14.  ", DIM, False), ("slipping    ", WHITE, True), ("Time Keeps On Slipping", FG, False)],
-        [("       a clock that is correct for about a minute", DIM, False)],
-        [("  16.  ", DIM, False), ("turbulence  ", WHITE, True), ("Turbulence", FG, False)],
-        [("       a route to the tower, degrading. It reaches nothing", DIM, False)],
-    ], 220)
+    lines = [None,
+             [("  DELTRON 3030", WHITE, True),
+              ("  // the album, as command-line programs", DIM, False)],
+             None]
+    for mod, no, title, blurb in rows:
+        lines.append([(f"  {no:>3}.  ", DIM, False), (f"{mod:<12}", WHITE, True),
+                      (title, FG, False)])
+        lines.append([(f"       {blurb}", DIM, False)])
+    t.reveal(lines, 200)
     t.blink()
     save(t, "tracklist")
 
@@ -246,7 +242,72 @@ def upgrade():
     save(t, "upgrade")
 
 
-ALL = {f.__name__: f for f in (tracklist, virus, mastermind, turbulence, upgrade)}
+def things():
+    t = term("things — 3030", 20)
+    t.type("deltron things")
+    rows = [("export your data", "available on the Enterprise plan"),
+            ("undo", "not available in your region"),
+            ("sort by date", "requires an account"),
+            ("sort by name", "requires a different account"),
+            ("work offline", "requires a connection"),
+            ("cancel your subscription", "call us"),
+            ("call us", "outside business hours"),
+            ("speak to a person", "you are speaking to a person"),
+            ("read the terms", "1,204 pages"),
+            ("disagree with the terms", "by continuing you agree to the terms")]
+    t.reveal([None, [("  THINGS YOU CAN DO", WHITE, True), ("  (20 things)", DIM, False)], None]
+             + [[(f"  {i:>3}.  ", DIM, False), (f"{a:<26}", FG, False), (b, DIM, False)]
+                for i, (a, b) in enumerate(rows, 1)], 240)
+    t.hold(2200)
+    t.blink()
+    save(t, "things")
+
+
+def newcoke():
+    t = term("newcoke — 3030", 18)
+    t.type("deltron newcoke")
+    t.reveal([None,
+              [("  REBRAND", WHITE, True), ("  // Ubiquitous -> Ubiq", DIM, False)], None,
+              [("    marketing site           47  ", DIM, False), ("done", GREEN, False)],
+              [("    error messages          214  ", DIM, False), ("still Ubiquitous", YELLOW, False)],
+              [("    the URL                   1  ", DIM, False), ("still Ubiquitous", YELLOW, False)],
+              [("    legal entity name         1  ", DIM, False), ("still Ubiquitous", YELLOW, False)],
+              [("    what customers call it    1  ", DIM, False), ("still Ubiquitous", YELLOW, False)],
+              None,
+              [("  50 references updated. 837 remain.", FG, False)]], 300)
+    t.reveal([None,
+              [("  REBRAND COMPLETE", GREEN, True)], None,
+              [("  brands                    1  ->  2", FG, False)],
+              [("  products                  1  ->  2", FG, False)],
+              [("  support queues            1  ->  2", FG, False)],
+              [("  things anyone asked for   0  ->  0", FG, False)], None,
+              [("  Ubiquitous Classic is available from today.", WHITE, True)],
+              [("  You now maintain both. Forever.", DIM, False)]], 420)
+    t.hold(2400)
+    save(t, "newcoke")
+
+
+def madness():
+    t = term("madness — 3030", 20)
+    t.type("deltron madness")
+    cases = [("nul byte", 618), ("2**63", 1235), ("NaN", 1852),
+             ("'; DROP TABLE --", 2469), ("../../etc/passwd", 3086),
+             ("right-to-left override", 3703), ("2038-01-19T03:14:08Z", 4320)]
+    t.reveal([None, [("  MADNESS", WHITE, True), ("  // fuzzing, 10,000 cases", DIM, False)], None]
+             + [[("    PASS", GREEN, True), (f"  case {n:>5}  ", DIM, False), (lbl, FG, False)]
+                for lbl, n in cases], 260)
+    t.reveal([None, [("  ...9,984 more", DIM, False)], None,
+              [("  10,000 cases. 0 failures. 100% pass rate.", GREEN, True)]], 420)
+    t.reveal([None, [("  The assertion, in full:", YELLOW, True)], None,
+              [("      def check(value):", WHITE, True)],
+              [("          return True", WHITE, True)], None,
+              [("  No test has ever failed. No test can.", DIM, False)]], 520)
+    t.hold(2400)
+    save(t, "madness")
+
+
+ALL = {f.__name__: f for f in (tracklist, virus, mastermind, turbulence, upgrade,
+                               things, newcoke, madness)}
 
 if __name__ == "__main__":
     names = sys.argv[1:] or list(ALL)

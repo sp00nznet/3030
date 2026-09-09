@@ -17,6 +17,7 @@ import io
 import sys
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, type_out, w
 from news import OWNERS  # the same corporations, because of course it is
@@ -102,6 +103,7 @@ def run():
 
 
 def main():
+    audio.cue("contact")
     try:
         run()
     finally:

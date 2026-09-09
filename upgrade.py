@@ -15,14 +15,13 @@ the letter that means nothing. Same joke from the other end.
 import io
 import os
 import sys
-import threading
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, size, type_out, w
 
 HERE = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
-MUTE = "--mute" in sys.argv
 
 BLUE = ESC + "38;5;39m"
 WHITE = ESC + "38;5;255m"
@@ -39,21 +38,6 @@ def changelog():
     """'#' lines are notes to whoever edits the file, not changelog entries."""
     with open(os.path.join(HERE, "changelog.txt"), encoding="utf-8") as f:
         return [ln.rstrip() for ln in f if not ln.lstrip().startswith("#") and ln.strip()]
-
-
-# --- audio -----------------------------------------------------------------
-# Ascending fanfare that resolves to the note it started on: the success chime
-# goes exactly as far as the upgrade does.
-CHIME = [(523, 120), (659, 120), (784, 160), (523, 320)]
-
-
-def chime():
-    try:
-        import winsound
-    except ImportError:
-        return  # not Windows: silent, everything else runs
-    for freq, ms in CHIME:
-        winsound.Beep(freq, ms)
 
 
 def banner():
@@ -185,8 +169,6 @@ def act_restart():
 
 
 def main():
-    if not MUTE and not theater.FAST:
-        threading.Thread(target=chime, daemon=True).start()
     try:
         act_check()
         act_download()
@@ -202,8 +184,6 @@ def _ver(s):
 
 def demo():
     """One assert per act, plus the ones that protect the joke."""
-    global MUTE
-    MUTE = True
     theater.fast(True)
     buf = io.StringIO()
     with redirect_stdout(buf):

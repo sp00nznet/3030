@@ -44,6 +44,8 @@ repo to be able to say. `y3k: ignore` on a line skips it;
 
 A capability list. Everything on it is unavailable.
 
+![things](docs/things.gif)
+
 ```bash
 python things.py            # the list
 python things.py 17         # attempt one of them
@@ -142,6 +144,8 @@ kept to the letter that means nothing. Same joke from the other end.
 A rebrand. It renames the product, migrates almost nothing, and ends with two
 products instead of one, forever.
 
+![new coke](docs/newcoke.gif)
+
 ```
   brands                    1  ->  2
   products                  1  ->  2
@@ -178,6 +182,8 @@ typo, not an attempt, and does not cost you one.
 A fuzzer. The inputs are genuinely hostile — nul bytes, `2**63`, NaN,
 `'; DROP TABLE --`, an RTL override, 2038 timestamps. Ten thousand cases,
 zero failures. Then it shows you the assertion:
+
+![madness](docs/madness.gif)
 
 ```
       def check(value):
@@ -284,8 +290,9 @@ The banner forgets its own name on the same slope. Nothing is actually
 allocated; the number is a number. It ends on `0 freed. I don't remember why.`
 ## The safety rails, since one of these is called `virus`
 
-- No writes outside this repo. **None.** Nothing is created, so there is
-  nothing to clean up.
+- No writes outside this repo, with exactly one exception: on macOS, audio
+  writes a single temporary WAV because `afplay` cannot read stdin, and
+  deletes it immediately. Windows and Linux write nothing at all.
 - No self-replication, ever. The folder bomb is `print()` in a loop.
 - No network, no subprocess against the system, no registry, no startup
   entry, no persistence.
@@ -301,28 +308,51 @@ comes back **unchanged**.
 
 ## The music
 
-`virus.py` and `upgrade.py` are the two that make noise.
+Every track has its own cue, and they play on all three platforms. `audio.py`
+synthesises a WAV in memory with stdlib `wave` and hands the bytes to whatever
+the machine has:
 
-`winsound.Beep` on a daemon thread. A four-note riff at 90bpm that sounds
-like a 1997 shareware installer, which is the correct sound for this. Windows
-only; elsewhere the import fails, audio goes quiet, everything else runs.
+| | |
+|---|---|
+| Windows | `winsound.PlaySound(..., SND_MEMORY)` — no file at all |
+| Linux | `aplay` / `paplay` / `play`, WAV on stdin — no file at all |
+| macOS | `afplay`, which insists on a path — one temp file, deleted immediately |
 
-`music.py` writes the riff out as **`virus.mid`** (bass + drums, 13 seconds,
-1 KB) with hand-rolled `struct.pack` and no MIDI library. The notes are
-original — see the Notice.
+If none of that works everything falls silent and every program still runs. A
+missing player is not an error; it is a quiet Tuesday. Sound is also off
+automatically whenever stdout is not a terminal, so piping, redirecting, CI
+and the self-checks never make a noise.
+
+Thirteen cues, each its own small idea: a bassline for `virus`, a fanfare that
+resolves to the note it started on for `upgrade`, two notes down for `things`,
+a beacon nobody answers for `contact`, a jingle that plays itself twice for
+`newcoke`, tumblers falling for `mastermind`, something that never resolves
+for `madness`, a phrase that loses a note each time round for `memory`.
+
+```bash
+python audio.py            # play every cue
+python audio.py virus      # play one
+python music.py            # -> midi/*.mid, one per track
+```
+
+`music.py` writes the same notes out as MIDI with hand-rolled `struct.pack`
+and no library — it imports the cues from `audio.py` rather than copying them,
+so a cue and its `.mid` cannot drift apart. Every riff is original; see the
+Notice.
 
 ## How it is put together
 
 ```
 deltron.py     the umbrella. runpy, not a plugin system
 theater.py     the shared stage: typewriter, sleeps, terminal restore
+audio.py       the cues, and WAV playback on all three platforms
 virus.py       track 7
 mastermind.py  track 10
 upgrade.py     track 8
 slipping.py    track 14
 turbulence.py  track 16
 y3k.py         track 2
-music.py       writes virus.mid
+music.py       writes midi/*.mid, one per track
 lyrics.txt     act 4 of virus scrolls whatever is in here
 changelog.txt  the filler upgrade.py reads
 docs/demos.py  makes every image above, with termshot
@@ -366,14 +396,14 @@ is one of the best records ever built.
 - **The lyrics** are a four-line excerpt, quoted with attribution, in a
   project that exists to comment on those four lines. Rights remain with
   their owners. Don't paste the full verse into the repo.
-- **The music is original.** The riff is four notes written to sound like a
-  1997 shareware installer. It is not a transcription of, sample of, or
-  derivative of the album's instrumental.
+- **The music is original.** Thirteen short cues written to sound like cheap
+  hardware from 1997. None of it is a transcription of, sample of, or
+  derivative of the album's instrumentals.
 - **The code** is free to take. The song isn't ours to give.
 
 ## License
 
-MIT for everything in this repo — code, `virus.mid`, docs. See
+MIT for everything in this repo — code, the MIDI files, docs. See
 [LICENSE](LICENSE), which carves out the quoted lyrics: those aren't ours to
 license to you.
 

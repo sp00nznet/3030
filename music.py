@@ -1,29 +1,43 @@
 #!/usr/bin/env python3
-"""Writes virus.mid -- the act-3 bassline, as a real MIDI file.
+"""Writes one MIDI file per track, from the same cues the programs play.
 
-    python music.py            -> virus.mid
+    python music.py            -> midi/*.mid
     python music.py --check    self-check
 
-ponytail: a .mid is 60 lines of struct.pack. A MIDI library is a dependency
-for a file format that was finished in 1983 and never moved again.
-The riff is imported from virus.py so there is one copy of it.
+ponytail: a .mid is sixty lines of struct.pack. A MIDI library is a
+dependency for a file format that was finished in 1983 and never moved again.
 
-The notes are ORIGINAL -- four of them, written to sound like a shareware
-installer. Not a transcription of the Automator's instrumental, and not
-meant to stand in for it. See the Notice in README.md.
+The notes live in audio.py and are imported, not copied, so a cue and its
+.mid can never drift apart. Every riff is original -- see the Notice in
+README.md.
 """
 import math
 import os
 import struct
 import sys
 
-from virus import RIFF  # (hz, ms) -- single source of truth
+from audio import RIFFS
 
-BARS = 8
 PPQ = 1000            # ticks per quarter
-TEMPO = 1_000_000     # us per quarter -> 1 tick == 1 ms, so RIFF ms ARE ticks
-BASS_PROG = 38        # GM 39 "Synth Bass 1", zero-based
-NAME = b"DELTRON 3030 // VIRUS v3030.1"
+TEMPO = 1_000_000     # us per quarter -> 1 tick == 1 ms, so cue ms ARE ticks
+BARS = 4              # loops per file, so a .mid is long enough to be a loop
+
+# General MIDI program per track, chosen to suit the cue. Zero-based.
+VOICES = {
+    "virus": 38,        # synth bass 1
+    "upgrade": 80,      # lead 1 (square)
+    "things": 11,       # vibraphone
+    "contact": 94,      # pad 7 (halo)
+    "newcoke": 12,      # marimba
+    "mastermind": 9,    # glockenspiel
+    "madness": 102,     # fx 7 (echoes)
+    "slipping": 89,     # pad 2 (warm)
+    "news": 56,         # trumpet
+    "turbulence": 87,   # lead 8 (bass + lead)
+    "battlesong": 33,   # electric bass (finger)
+    "memory": 8,        # celesta
+    "y3k": 115,         # woodblock
+}
 
 
 def note(hz):
@@ -48,17 +62,18 @@ def chunk(events):
     return b"MTrk" + struct.pack(">I", len(body)) + body
 
 
-def tempo_track():
+def tempo_track(name):
+    label = name.encode()[:127]
     return [(0, b"\xff\x51\x03" + struct.pack(">I", TEMPO)[1:]),
-            (0, b"\xff\x03" + bytes([len(NAME)]) + NAME)]
+            (0, b"\xff\x03" + bytes([len(label)]) + label)]
 
 
-def bass_track():
-    ev, wait = [(0, bytes([0xC0, BASS_PROG]))], 0
-    for _ in range(BARS):
-        for hz, ms in RIFF:
+def voice_track(riff, program, bars=BARS):
+    ev, wait = [(0, bytes([0xC0, program]))], 0
+    for _ in range(bars):
+        for hz, ms in riff:
             if not hz:
-                wait += ms  # rest: carry the delta to the next real event
+                wait += ms          # a rest carries its delta to the next note
                 continue
             n = note(hz)
             ev.append((wait, bytes([0x90, n, 100])))
@@ -67,13 +82,14 @@ def bass_track():
     return ev
 
 
-def drum_track():
-    """4-on-the-floor kick, snare on 2 and 4, over the riff's own cycle."""
-    step = sum(ms for _, ms in RIFF) // 4
+def drum_track(riff, bars=BARS):
+    """Four on the floor over the cue's own cycle, snare on 2 and 4."""
+    cycle = sum(ms for _, ms in riff)
+    step = max(1, cycle // 4)
     ev = []
-    for _ in range(BARS):
+    for _ in range(bars):
         for i in range(4):
-            hits = [36] + ([38] if i % 2 else [])   # kick, +snare on 2 & 4
+            hits = [36] + ([38] if i % 2 else [])
             for h in hits:
                 ev.append((0, bytes([0x99, h, 90 if h == 36 else 70])))
             ev.append((step, bytes([0x89, hits[0], 0])))
@@ -82,32 +98,51 @@ def drum_track():
     return ev
 
 
-def build():
-    return (b"MThd" + struct.pack(">IHHH", 6, 1, 3, PPQ)
-            + chunk(tempo_track()) + chunk(bass_track()) + chunk(drum_track()))
+def build(name, drums=True):
+    riff = RIFFS[name]
+    tracks = [chunk(tempo_track(f"DELTRON 3030 // {name}")),
+              chunk(voice_track(riff, VOICES.get(name, 80)))]
+    if drums:
+        tracks.append(chunk(drum_track(riff)))
+    head = b"MThd" + struct.pack(">IHHH", 6, 1, len(tracks), PPQ)
+    return head + b"".join(tracks)
 
 
-def write(path="virus.mid"):
-    data = build()
-    with open(path, "wb") as f:
-        f.write(data)
-    return len(data)
+def write_all(out_dir):
+    os.makedirs(out_dir, exist_ok=True)
+    written = []
+    for name in sorted(RIFFS):
+        # The sparse cues get no drum track; a beat under them ruins them.
+        drums = name not in ("contact", "y3k", "slipping", "memory")
+        data = build(name, drums=drums)
+        path = os.path.join(out_dir, name + ".mid")
+        with open(path, "wb") as f:
+            f.write(data)
+        written.append((name, len(data)))
+    return written
 
 
 def demo():
     assert note(98) == 43, "G2 should be MIDI 43"
     assert note(440) == 69, "A4 should be MIDI 69"
     assert vlq(0) == b"\x00" and vlq(128) == b"\x81\x00", "bad varlen encoding"
-    d = build()
-    assert d[:4] == b"MThd" and d.count(b"MTrk") == 3, "not a 3-track format-1 file"
-    beats = sum(ms for _, ms in RIFF) * BARS
-    assert 5000 < beats < 60000, f"riff is {beats}ms, that is not a song"
-    print(f"ok: {len(d)} bytes, 3 tracks, {beats / 1000:.1f}s")
+    assert set(VOICES) == set(RIFFS), "every cue needs a voice, and vice versa"
+    assert all(0 <= p <= 127 for p in VOICES.values()), "GM programs are 0-127"
+    for name in RIFFS:
+        d = build(name)
+        assert d[:4] == b"MThd", f"{name}: not a MIDI file"
+        assert d.count(b"MTrk") == 3, f"{name}: expected 3 chunks"
+        assert len(d) > 60, f"{name}: suspiciously small"
+    solo = build("contact", drums=False)
+    assert solo.count(b"MTrk") == 2, "drums must be droppable"
+    print(f"ok: {len(RIFFS)} tracks, format 1, notes shared with audio.py")
 
 
 if __name__ == "__main__":
     if "--check" in sys.argv:
         demo()
     else:
-        n = write(os.path.join(os.path.dirname(os.path.abspath(__file__)), "virus.mid"))
-        print(f"wrote virus.mid ({n} bytes)")
+        here = os.path.dirname(os.path.abspath(__file__))
+        out = os.path.join(here, "midi")
+        for name, n in write_all(out):
+            print(f"  midi/{name}.mid  {n:,} bytes")

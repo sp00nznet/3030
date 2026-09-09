@@ -11,16 +11,14 @@ Does nothing to your computer. Loudly. See SPEC.md.
 import io
 import os
 import sys
-import threading
-import time
 from contextlib import redirect_stdout
 
+import audio
 import theater
 from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, size, type_out, w
 
 # _MEIPASS: PyInstaller onefile unpacks lyrics.txt there. See .github/workflows/build.yml
 HERE = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
-MUTE = "--mute" in sys.argv
 
 GREEN = ESC + "38;5;46m"
 DIM = ESC + "38;5;28m"
@@ -32,29 +30,6 @@ def lyrics():
     act 4 scrolls this onto the papyrus, so they must not end up on it."""
     with open(os.path.join(HERE, "lyrics.txt"), encoding="utf-8") as f:
         return [ln.rstrip() for ln in f if not ln.lstrip().startswith("#")]
-
-
-# --- audio -----------------------------------------------------------------
-# ponytail: winsound.Beep is the whole sound engine. Sounds like a 1997
-# shareware installer, which is the joke. Upgrade path is a .mid via
-# struct.pack, but then it needs a player -- see SPEC.md non-goals.
-RIFF = [(98, 200), (98, 200), (117, 160), (98, 200),
-        (73, 260), (0, 120), (87, 200), (98, 320)]
-
-
-def beat(stop):
-    try:
-        import winsound
-    except ImportError:
-        return  # not Windows: silent, everything else still runs
-    while not stop.is_set():
-        for freq, ms in RIFF:
-            if stop.is_set():
-                return
-            if freq:
-                winsound.Beep(freq, ms)
-            else:
-                time.sleep(ms / 1000)
 
 
 # --- act 1: boot -----------------------------------------------------------
@@ -141,23 +116,18 @@ def act_papyrus():
 
 
 def main():
-    stop = threading.Event()
-    if not MUTE and not theater.FAST:
-        threading.Thread(target=beat, args=(stop,), daemon=True).start()
+    audio.cue("virus", loops=24)   # long enough to cover the whole run
     try:
         act_boot()
         act_noise()
         act_bomb()
         act_papyrus()
     finally:
-        stop.set()
         w(RESET + SHOW + "\n")  # always give the terminal back
 
 
 def demo():
     """One assert per act. Fails if any act stops producing its payload."""
-    global MUTE
-    MUTE = True
     theater.fast(True)
     buf = io.StringIO()
     with redirect_stdout(buf):

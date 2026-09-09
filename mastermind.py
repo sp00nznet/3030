@@ -16,6 +16,7 @@ import random
 import sys
 from collections import Counter
 
+import audio
 from theater import ESC, RESET, w
 
 GLYPHS = 6
@@ -103,6 +104,7 @@ def play(secret, ask):
 
 
 def main(seed=None):
+    audio.cue("mastermind")
     rng = random.Random(seed)
     secret = tuple(rng.randint(1, GLYPHS) for _ in range(SLOTS))
     play(secret, input)

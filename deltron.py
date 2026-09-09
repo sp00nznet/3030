@@ -31,7 +31,7 @@ TRACKS = [
     ("turbulence", 16, "Turbulence", "a route to the tower, degrading. It reaches nothing"),
     ("upgrade", 8, "Upgrade (A Brymar College Course)", "a promise kept to the letter, meaning nothing"),
 ]
-CHECKS = [m for m, _, _, _ in TRACKS] + ["music"]
+CHECKS = [m for m, _, _, _ in TRACKS] + ["audio", "music"]
 
 ESC = "\033["
 DIM = ESC + "38;5;245m"
