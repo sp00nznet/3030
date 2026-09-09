@@ -69,14 +69,14 @@ def tracklist():
         [("       a Y3K compliance checker. The only one that does something real", DIM, False)],
         [("   7.  ", DIM, False), ("virus       ", WHITE, True), ("Virus", FG, False)],
         [("       a threat that cannot be carried out", DIM, False)],
+        [("   8.  ", DIM, False), ("upgrade     ", WHITE, True), ("Upgrade (A Brymar College Course)", FG, False)],
+        [("       a promise kept to the letter, meaning nothing", DIM, False)],
         [("  10.  ", DIM, False), ("mastermind  ", WHITE, True), ("Mastermind", FG, False)],
         [("       a lock, ten tries. The one that keeps score", DIM, False)],
         [("  14.  ", DIM, False), ("slipping    ", WHITE, True), ("Time Keeps On Slipping", FG, False)],
         [("       a clock that is correct for about a minute", DIM, False)],
         [("  16.  ", DIM, False), ("turbulence  ", WHITE, True), ("Turbulence", FG, False)],
         [("       a route to the tower, degrading. It reaches nothing", DIM, False)],
-        [("   8.  ", DIM, False), ("upgrade     ", WHITE, True), ("Upgrade (A Brymar College Course)", FG, False)],
-        [("       a promise kept to the letter, meaning nothing", DIM, False)],
     ], 220)
     t.blink()
     save(t, "tracklist")

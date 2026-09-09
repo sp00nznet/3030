@@ -36,7 +36,7 @@ def tracklist():
     print()
     print(f"  {WHITE}DELTRON 3030{RESET}  {DIM}// the album, as command-line programs{RESET}")
     print()
-    for mod, no, title, blurb in TRACKS:
+    for mod, no, title, blurb in sorted(TRACKS, key=lambda t: t[1]):  # album order
         print(f"  {DIM}{no:>2}.{RESET}  {WHITE}{mod:<12}{RESET}{title}")
         print(f"       {DIM}{blurb}{RESET}")
     print()
