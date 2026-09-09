@@ -121,7 +121,7 @@ different angles, and each one is a small terminal program:
 |---|---|
 | Virus | `virus.py` — a threat that cannot be carried out |
 | Upgrade (A Brand New Day) | `upgrade.py` — a promise kept to the letter, meaning nothing. See [SPEC-upgrade.md](SPEC-upgrade.md) |
-| 3030 | a Y3K compliance checker. The only one that is faintly useful |
+| 3030 | `y3k.py` — a Y3K compliance checker. The only one that is faintly useful |
 | Time Keeps On Slipping | a clock that drifts |
 | Mastermind | the actual code-breaking game |
 | Turbulence | a network path degrading in front of you |
@@ -138,5 +138,8 @@ Two structural rules, so this doesn't turn into a framework:
 
 - **No `theater.py` until the third track.** Copy the four helpers. Two
   callers is not a pattern; extract when the third one shows what it needed.
+  *Update: the third track (`y3k.py`) turned out not to want them — it is a
+  linter, so its payload is a report, not an animation. Still not extracted.
+  This is the rule working, not the rule being skipped.*
 - **No `deltron <track>` umbrella CLI until the fourth.** Worth it at four,
   premature at two.

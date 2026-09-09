@@ -131,8 +131,23 @@ python upgrade.py --rollback  # the truest line in the program
 `virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
 kept to the letter that means nothing. Same joke from the other end.
 
-Planned, in [SPEC.md](SPEC.md): a Y3K compliance checker (_3030_), a clock that
-drifts (_Time Keeps On Slipping_), the code-breaking game (_Mastermind_).
+**`y3k.py`** — _3030_. A Y3K compliance checker, and the only thing in this
+repo that does something real. It scans for date handling that will not
+survive the year 3030 — two-digit years, 32-bit clocks, regexes that only
+match years starting 1 or 2 — and reports each one with the year it actually
+breaks in. Exits 1 on findings, so it works in CI, which is an absurd thing
+for this repo to be able to say.
+
+```bash
+python y3k.py             # scan the current directory
+python y3k.py path/to/src
+```
+
+The 2038 and two-digit-year findings are genuine bugs with genuine dates
+attached. The Y10K rule is not, and is marked LOW accordingly.
+
+Planned, in [SPEC.md](SPEC.md): a clock that drifts (_Time Keeps On
+Slipping_), the code-breaking game (_Mastermind_).
 
 ## Credit
 
