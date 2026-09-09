@@ -101,6 +101,24 @@ The one program here that is a real game, with logic you can lose to. The
 rest of the album is theater; this one keeps score. A malformed guess is a
 typo, not an attempt, and does not cost you one.
 
+### 11. Turbulence — `turbulence.py`
+
+A route to the tower, degrading in front of you. Latency climbs, hops start
+starring out, the path flaps between two routes that are both wrong, and then
+there is no route at all.
+
+```bash
+python turbulence.py             # ~35s to total loss
+python turbulence.py --speed 4   # four times faster
+```
+
+It reaches nothing. There are no sockets in the file and every host is on
+`.3030`, a TLD that does not exist — a convincing fake network tool is a much
+worse idea than a convincing fake virus. The self-check asserts both: no
+network module is loaded, and no hostname could resolve.
+
+It ends on `0 packets sent. 0 packets received. None of this happened.`
+
 ## The safety rails, since one of these is called `virus`
 
 - No writes outside this repo. **None.** Nothing is created, so there is
@@ -157,6 +175,7 @@ virus.py       track 5
 mastermind.py  track 6
 upgrade.py     track 12
 slipping.py    track 10
+turbulence.py  track 11
 y3k.py         track 2
 music.py       writes virus.mid
 lyrics.txt     act 4 of virus scrolls whatever is in here

@@ -35,6 +35,7 @@ jobs:
             --hidden-import y3k \
             --hidden-import mastermind \
             --hidden-import slipping \
+            --hidden-import turbulence \
             --hidden-import music \
             deltron.py
       - name: smoke test the binary

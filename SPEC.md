@@ -124,7 +124,7 @@ different angles, and each one is a small terminal program:
 | 3030 | `y3k.py` — a Y3K compliance checker. The only one that is faintly useful |
 | Time Keeps On Slipping | `slipping.py` — a clock that drifts, exponentially, into 3030 |
 | Mastermind | `mastermind.py` — the deduction game, dressed as a lock on the tower |
-| Turbulence | a network path degrading in front of you. Not built |
+| Turbulence | `turbulence.py` — a route to the tower, degrading. Reaches nothing, by design |
 
 **One repo, one file per track.** No repo per song, no package per song.
 `virus.py` keeps its name — it's track 5, not the project.
