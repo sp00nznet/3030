@@ -19,6 +19,7 @@ import sys
 TRACKS = [
     ("y3k", 2, "3030", "a Y3K compliance checker. The only one that does something real"),
     ("things", 4, "Things You Can Do", "a capability list. Everything on it is unavailable"),
+    ("contact", 5, "Positive Contact", "finds life, files the mineral rights, never replies"),
     ("news", 15, "The News", "the disclosure outgrows the story, then closes on itself"),
     ("memory", 20, "Memory Loss", "memory climbs, the description of the work erodes"),
     ("virus", 7, "Virus", "a threat that cannot be carried out"),

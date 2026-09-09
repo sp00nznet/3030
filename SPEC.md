@@ -128,7 +128,7 @@ different angles, and each one is a small terminal program:
 | Things You Can Do | `things.py` — a capability list where nothing is available |
 | The News | `news.py` — the ownership disclosure outgrows the story |
 | Memory Loss | `memory.py` — memory climbs while the work description erodes |
-| Positive Contact | a SETI screensaver that finds life and immediately files a claim. Not built |
+| Positive Contact | `contact.py` — finds life, files the mineral rights, never replies |
 | New Coke | a rebrand that migrates nothing. Not built |
 | Battlesong | two algorithms benchmarked as a battle. Not built |
 | Madness | a fuzzer that reports everything as passing. Not built |

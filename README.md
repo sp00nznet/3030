@@ -55,6 +55,32 @@ given someone: `available on the Enterprise plan`, `requires the mobile app`,
 `removed in v3030.2`, `you are speaking to a person`. `--all` exits 1,
 because zero of twenty available is a failure by any honest measure.
 
+### 5. Positive Contact — `contact.py`
+
+A distributed-computing screensaver that listens for intelligent life, finds
+it, and resolves it into a mineral rights filing before the greeting has
+finished decoding.
+
+```bash
+python contact.py
+```
+
+```
+  POSITIVE CONTACT   signal-to-noise 31.4
+  Kepler-442 b
+    DECODE    language decoded
+              they said: "we have been waiting"
+    CLAIM     mineral rights filed
+    RESOLVE   contact resolved
+              1,200,000,000 t heavy water -> Ubiquitous Media
+```
+
+The track is about assimilating matter and energy on the way through space.
+This is that as a workflow: understanding them comes first and changes
+nothing. `reply` is not one of the six steps, and the self-check asserts it
+never becomes one. The shell companies are imported from `news.py`, because
+of course it is the same companies.
+
 ### 7. Virus — `virus.py`
 
 Somebody had to try. Four acts: a fake boot, the impossible requirements
