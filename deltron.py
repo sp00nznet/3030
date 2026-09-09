@@ -19,6 +19,7 @@ import sys
 TRACKS = [
     ("y3k", 2, "3030", "a Y3K compliance checker. The only one that does something real"),
     ("virus", 5, "Virus", "a threat that cannot be carried out"),
+    ("mastermind", 6, "Mastermind", "a lock, ten tries. The one that keeps score"),
     ("slipping", 10, "Time Keeps On Slipping", "a clock that is correct for about a minute"),
     ("upgrade", 12, "Upgrade (A Brand New Day)", "a promise kept to the letter, meaning nothing"),
 ]
@@ -35,7 +36,7 @@ def tracklist():
     print(f"  {WHITE}DELTRON 3030{RESET}  {DIM}// the album, as command-line programs{RESET}")
     print()
     for mod, no, title, blurb in TRACKS:
-        print(f"  {DIM}{no:>2}.{RESET}  {WHITE}{mod:<10}{RESET}{title}")
+        print(f"  {DIM}{no:>2}.{RESET}  {WHITE}{mod:<12}{RESET}{title}")
         print(f"       {DIM}{blurb}{RESET}")
     print()
     print(f"  {DIM}python deltron.py <name> [flags]   --fast on any of them skips the sleeps{RESET}")

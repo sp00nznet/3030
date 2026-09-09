@@ -33,6 +33,7 @@ jobs:
             --hidden-import virus \
             --hidden-import upgrade \
             --hidden-import y3k \
+            --hidden-import mastermind \
             --hidden-import slipping \
             --hidden-import music \
             deltron.py

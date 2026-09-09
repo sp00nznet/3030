@@ -86,10 +86,20 @@ Exits 1 on findings, so it works in CI, which is an absurd thing for this
 repo to be able to say. `y3k: ignore` on a line skips it;
 `y3k: ignore-start` / `-end` skips a block.
 
-### Planned
+### 6. Mastermind — `mastermind.py`
 
-**Mastermind** — the actual code-breaking game. The only one somebody would
-play twice. See [SPEC.md](SPEC.md).
+A lock on the corporate tower and ten tries at it. Six glyphs, four slots,
+repeats allowed; after each attempt the panel says how many glyphs are in the
+right slot and how many are right but somewhere else.
+
+```bash
+python mastermind.py            # play
+python mastermind.py --seed 7   # the same lock every time
+```
+
+The one program here that is a real game, with logic you can lose to. The
+rest of the album is theater; this one keeps score. A malformed guess is a
+typo, not an attempt, and does not cost you one.
 
 ## The safety rails, since one of these is called `virus`
 
@@ -144,6 +154,7 @@ original — see the Notice.
 deltron.py     the umbrella. runpy, not a plugin system
 theater.py     the shared stage: typewriter, sleeps, terminal restore
 virus.py       track 5
+mastermind.py  track 6
 upgrade.py     track 12
 slipping.py    track 10
 y3k.py         track 2
