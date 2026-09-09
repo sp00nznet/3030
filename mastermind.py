@@ -44,15 +44,23 @@ def score(secret, guess):
 
 
 def parse(text):
-    """'1 4 4 2' or '1442' -> (1, 4, 4, 2). None if it is not a legal guess."""
+    """'1 4 4 2' or '1442' -> ((1, 4, 4, 2), None), else (None, why).
+
+    The reason matters: "that guess is invalid" sends people looking for a
+    rule they broke. Naming the glyph that is out of range does not.
+    """
     parts = text.split() if " " in text else list(text.strip())
     if len(parts) != SLOTS:
-        return None
+        return None, f"that is {len(parts)} glyph{'' if len(parts) == 1 else 's'}, I need {SLOTS}"
     try:
         guess = tuple(int(p) for p in parts)
     except ValueError:
-        return None
-    return guess if all(1 <= g <= GLYPHS for g in guess) else None
+        return None, "glyphs are digits"
+    bad = sorted({g for g in guess if not 1 <= g <= GLYPHS})
+    if bad:
+        listed = " and ".join(str(g) for g in bad)
+        return None, f"no glyph {listed} on this lock -- they run 1 to {GLYPHS}"
+    return guess, None
 
 
 def render(guess):
@@ -65,9 +73,10 @@ def bar(exact, displaced):
 
 def play(secret, ask):
     """Returns (won, attempts_used). `ask` supplies guesses, so this is testable."""
+    legend = " ".join(f"{INK[g]}{g}{RESET}" for g in range(1, GLYPHS + 1))
     w(f"\n  {WHITE}BREACH{RESET} {DIM}// corporate tower, sublevel 4{RESET}\n")
-    w(f"  {DIM}{GLYPHS} glyphs, {SLOTS} slots, {ATTEMPTS} attempts. Repeats allowed.{RESET}\n")
-    w(f"  {DIM}# = right slot   + = right glyph, wrong slot{RESET}\n\n")
+    w(f"  {DIM}glyphs:{RESET} {legend}   {DIM}<- only these. {SLOTS} of them, repeats allowed{RESET}\n")
+    w(f"  {DIM}{ATTEMPTS} attempts.  # = right slot   + = right glyph, wrong slot{RESET}\n\n")
     used = 0
     while used < ATTEMPTS:
         try:
@@ -75,10 +84,10 @@ def play(secret, ask):
         except (EOFError, KeyboardInterrupt):
             w(f"\n  {DIM}Withdrawn. The code was {render(secret)}{DIM}.{RESET}\n")
             return False, used
-        guess = parse(raw)
+        guess, why = parse(raw)
         if guess is None:
             # A malformed guess is a typo, not an attempt. Do not charge for it.
-            w(f"  {BAD}{SLOTS} digits, 1-{GLYPHS}. Try '1 4 4 2' or '1442'.{RESET}\n")
+            w(f"       {BAD}{why}{RESET}{DIM}  (try '1 4 4 2' or '1442'){RESET}\n")
             continue
         used += 1
         exact, displaced = score(secret, guess)
@@ -108,9 +117,13 @@ def demo():
     assert score((1, 1, 1, 1), (1, 2, 2, 2)) == (1, 0), "one match, not four"
     assert score((1, 2, 2, 2), (1, 1, 1, 1)) == (1, 0), "and the same the other way round"
 
-    assert parse("1 4 4 2") == parse("1442") == (1, 4, 4, 2), "both input forms"
-    assert parse("1 4 4") is None and parse("7777") is None, "must reject bad guesses"
-    assert parse("abcd") is None and parse("0000") is None, "and non-digits and zero"
+    assert parse("1 4 4 2")[0] == parse("1442")[0] == (1, 4, 4, 2), "both input forms"
+    assert parse("1 4 4")[0] is None and parse("7777")[0] is None, "must reject bad guesses"
+    assert parse("abcd")[0] is None and parse("0000")[0] is None, "and non-digits and zero"
+    # the rejection has to say which glyph was wrong, or people hunt for a rule
+    assert "8" in parse("1823")[1] and "9" in parse("1900")[1], "name the bad glyph"
+    assert "0" in parse("1900")[1], "zero is a glyph people try, so name it too"
+    assert "3" in parse("143")[1] and "4" in parse("143")[1], "say how many were given"
 
     secret = (3, 1, 4, 1)
     fed = iter(["1111", "nonsense", "9999", "3 1 4 1"])
