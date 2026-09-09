@@ -21,21 +21,29 @@ jobs:
           python-version: '3.12'
       - run: pip install pyinstaller
       - name: self-check
-        run: |
-          python virus.py --check
-          python upgrade.py --check
-          python y3k.py --check
-          python slipping.py --check
-          python music.py --check
+        run: python deltron.py --check
       - name: build
         shell: bash
         run: |
           SEP=":"; [ "${{ runner.os }}" = "Windows" ] && SEP=";"
-          pyinstaller --onefile --name virus --add-data "lyrics.txt${SEP}." virus.py
+          # runpy loads the tracks by name, so PyInstaller cannot see them statically
+          pyinstaller --onefile --name deltron \
+            --add-data "lyrics.txt${SEP}." \
+            --add-data "changelog.txt${SEP}." \
+            --hidden-import virus \
+            --hidden-import upgrade \
+            --hidden-import y3k \
+            --hidden-import slipping \
+            --hidden-import music \
+            deltron.py
       - name: smoke test the binary
         shell: bash
-        run: ./dist/virus --check || ./dist/virus.exe --check
+        run: |
+          BIN=./dist/deltron; [ -f ./dist/deltron.exe ] && BIN=./dist/deltron.exe
+          $BIN | grep -q "DELTRON 3030"
+          $BIN virus --check      # proves lyrics.txt made it into the bundle
+          $BIN upgrade --check    # proves changelog.txt did too
       - uses: actions/upload-artifact@v4
         with:
-          name: virus-${{ matrix.os }}
-          path: dist/virus*
+          name: deltron-${{ matrix.os }}
+          path: dist/deltron*

@@ -10,46 +10,21 @@ Does nothing to your computer. Loudly. See SPEC.md.
 """
 import io
 import os
-import shutil
 import sys
 import threading
 import time
 from contextlib import redirect_stdout
 
+import theater
+from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, size, type_out, w
+
 # _MEIPASS: PyInstaller onefile unpacks lyrics.txt there. See .github/workflows/build.yml
 HERE = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
-FAST = "--fast" in sys.argv
 MUTE = "--mute" in sys.argv
 
-ESC = "\033["
 GREEN = ESC + "38;5;46m"
 DIM = ESC + "38;5;28m"
 REED = ESC + "48;5;180m" + ESC + "38;5;94m"  # tan ground, brown ink
-RESET = ESC + "0m"
-CLEAR = ESC + "2J" + ESC + "H"
-HIDE, SHOW = ESC + "?25l", ESC + "?25h"
-
-
-def w(s):
-    sys.stdout.write(s)
-    sys.stdout.flush()
-
-
-def nap(t):
-    if not FAST:
-        time.sleep(t)
-
-
-def size():
-    c = shutil.get_terminal_size((80, 24))
-    return c.columns, c.lines
-
-
-def type_out(s, cps=45, end="\n"):
-    for ch in s:
-        w(ch)
-        nap(1.0 / cps)
-    w(end)
 
 
 def lyrics():
@@ -167,7 +142,7 @@ def act_papyrus():
 
 def main():
     stop = threading.Event()
-    if not MUTE and not FAST:
+    if not MUTE and not theater.FAST:
         threading.Thread(target=beat, args=(stop,), daemon=True).start()
     try:
         act_boot()
@@ -181,8 +156,9 @@ def main():
 
 def demo():
     """One assert per act. Fails if any act stops producing its payload."""
-    global FAST, MUTE
-    FAST = MUTE = True
+    global MUTE
+    MUTE = True
+    theater.fast(True)
     buf = io.StringIO()
     with redirect_stdout(buf):
         main()

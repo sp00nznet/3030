@@ -136,10 +136,26 @@ rather than being done now on spec.
 
 Two structural rules, so this doesn't turn into a framework:
 
-- **No `theater.py` until the third track.** Copy the four helpers. Two
-  callers is not a pattern; extract when the third one shows what it needed.
-  *Update: the third track (`y3k.py`) turned out not to want them — it is a
-  linter, so its payload is a report, not an animation. Still not extracted.
-  This is the rule working, not the rule being skipped.*
-- **No `deltron <track>` umbrella CLI until the fourth.** Worth it at four,
-  premature at two.
+- ~~**No `theater.py` until the third track.**~~ **Done at the fourth.** The
+  third track (`y3k.py`) turned out not to want it — a linter's payload is a
+  report, not an animation. `virus.py`, `upgrade.py` and `slipping.py` had all
+  grown their own copy by track four, which is when the shared thing was
+  obvious: four helpers and the structural escapes. Each program keeps its own
+  palette, because the colour is part of what the program is.
+- ~~**No `deltron <track>` umbrella CLI until the fourth.**~~ **Done.**
+  `deltron.py` is `runpy`, not a plugin system: every track is already a
+  standalone program with its own `__main__` and flags, so the umbrella hands
+  it argv and gets out of the way.
+
+Building the umbrella immediately paid for itself: running `y3k` from another
+drive crashed on `os.path.relpath` across Windows mounts, a real bug that had
+been sitting there since the track shipped.
+
+Still not done, and still deliberate:
+
+- **No plugin registry, no entry points, no `tracks/` package.** `TRACKS` is
+  a list of four tuples. It becomes a problem at fifteen, and the album has
+  nine candidates.
+- **No shared test framework.** Each track has a `demo()` and one assert per
+  act. `deltron.py --check` shells out to each one so a crash in one cannot
+  hide the rest.

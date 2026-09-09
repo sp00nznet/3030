@@ -1,33 +1,117 @@
-# VIRUS v3030.1
+# 3030
 
 > _"I want to devise a virus / to bring dire straits to your environment /
 > crash your whole computer system / and revert you to papyrus"_
 > — Deltron 3030, _Virus_ (2000)
 
-Somebody had to try. This is that verse, implemented as literally as is
-legal, possible, and funny — in that order.
+Deltron 3030 is a concept album from 2000 about a mech soldier rap battling
+through a corporate dystopia in the year 3030. Half its tracklist describes
+technology failing people in ways that turn out to be very easy to render in
+a terminal.
+
+So: the album, as command-line programs. One file per track.
 
 ![demo](docs/demo.gif)
 
-It does **nothing** to your computer. That's the joke: the honest
-implementation of the entire verse is one `print()`, and this is four
-hundred lines instead.
-
-## Run
-
 ```bash
-python virus.py            # the full bit, ~45s, bassline on
-python virus.py --fast     # no sleeps, watch it in two seconds
-python virus.py --mute     # no bassline
-python virus.py --check    # self-check: all four acts, terminal restored
+python deltron.py            # the tracklist
+python deltron.py virus      # play a track
+python deltron.py --check    # every self-check in the repo
 ```
 
 Stdlib only. Python 3.8+. No pip install, no venv, nothing to uninstall.
 
+## The tracklist
+
+### 5. Virus — `virus.py`
+
+Somebody had to try. Four acts: a fake boot, the impossible requirements
+failing deadpan, a Win95 folder bomb **rendered rather than executed**, and a
+terminal that slowly fills with papyrus until it is a scroll.
+
+It does **nothing** to your computer. That is the joke — the honest
+implementation of the entire verse is one `print()`, and this is four hundred
+lines instead.
+
+```bash
+python virus.py            # ~45s, bassline on
+python virus.py --fast     # two seconds
+```
+
+### 12. Upgrade (A Brand New Day) — `upgrade.py`
+
+An upgrade process that is flawless, thorough, patient, beautifully
+instrumented, and changes nothing. A changelog of filler. An ETA that gets
+worse before it gets better. Config migrated into itself. A restart into the
+identical screen. The version goes up, the feature count goes down, and the
+last line is `0 files changed`, which is a true statement about the program
+rather than a bit.
+
+```bash
+python upgrade.py --rollback   # the truest line in the program
+```
+
+`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
+kept to the letter that means nothing. Same joke from the other end.
+
+### 10. Time Keeps On Slipping — `slipping.py`
+
+A clock that is correct when it starts and is not correct for long. The drift
+is exponential, so the first half minute looks fine, a minute in you are a
+couple of minutes fast, three minutes in you are weeks ahead, and around
+minute five it arrives in 3030 and stops.
+
+```bash
+python slipping.py             # ~5 min to 3030
+python slipping.py --drift 4   # slip sooner (time constant, seconds)
+```
+
+`--drift` is the calibration knob. The default is tuned so the slip stays
+invisible exactly long enough to be annoying.
+
+### 2. 3030 — `y3k.py`
+
+The only thing here that does something real. A Y3K compliance checker: it
+scans for date handling that will not survive the year 3030 and reports the
+year each finding actually breaks in.
+
+```bash
+python y3k.py             # scan the current directory
+python y3k.py path/to/src
+```
+
+2038 for 32-bit clocks and 2100 for two-digit years are genuine bugs with
+genuine dates attached. The Y10K rule is not, and is marked LOW accordingly.
+Exits 1 on findings, so it works in CI, which is an absurd thing for this
+repo to be able to say. `y3k: ignore` on a line skips it;
+`y3k: ignore-start` / `-end` skips a block.
+
+### Planned
+
+**Mastermind** — the actual code-breaking game. The only one somebody would
+play twice. See [SPEC.md](SPEC.md).
+
+## The safety rails, since one of these is called `virus`
+
+- No writes outside this repo. **None.** Nothing is created, so there is
+  nothing to clean up.
+- No self-replication, ever. The folder bomb is `print()` in a loop.
+- No network, no subprocess against the system, no registry, no startup
+  entry, no persistence.
+- `upgrade.py` never touches a real package manager. A fake upgrade that
+  shells out to a real one is not a joke.
+- `finally:` restores your cursor and colors on Ctrl-C. Always.
+- `python deltron.py --check` asserts all of it, per track.
+
+The self-checks assert the jokes, not just the code: that the ETA gets worse
+before it gets better, that `This will only take a moment` is the longest
+step, that the clock is correct at zero seconds, that the post-upgrade banner
+comes back **unchanged**.
+
 ## The spec review
 
-Before writing it we triaged the requirements. The client is Del. The spec
-is a rap verse.
+Before writing any of it we triaged the requirements. The client is Del. The
+spec is a rap verse.
 
 | Requirement | Verdict |
 |---|---|
@@ -35,7 +119,6 @@ is a rap verse.
 | "revert you to papyrus" | closest real behavior is *paperweight*. off by one material |
 | "no Microsoft or Windows when I'm through" | you cannot uninstall a corporation |
 | "a file gets deleted / Bingo! hard drive" | this is `del`. shipped 1981. **Del invented Del** |
-| "delete your text like so much white out" | duplicate of the above |
 | "shut down the entire whitehouse" | air-gapped |
 | "corrupt politicians" | no-op, idempotent |
 | "even space stations" | 400ms RTT, custom RTOS, they'd notice |
@@ -43,129 +126,52 @@ is a rap verse.
 
 Exactly one line in the verse describes a real mechanism: **replication**.
 The Win95 folder bomb — not clever, just `mkdir` in a loop until Explorer
-gave up. So that's the one we perform, and we perform it as theater.
+gave up. So that is the one we perform, and we perform it as theater.
 
-## What it actually does
+## The music
 
-Four acts, in `virus.py`:
-
-1. **BOOT** — ANSI green, fake POST, banner.
-2. **NOISE** — the table above, as scrolling log lines, failing deadpan.
-3. **BOMB** — the folder bomb, **rendered, not executed**. The counter climbs
-   to 2047, the path collapses to `./scrolls/x2047/` once it outgrows your
-   terminal, and your disk is exactly where it was.
-4. **PAPYRUS** — the screen fills with `~` from the bottom up until every
-   cell is reed, then the lyrics scroll down it. Your terminal is a scroll.
-
-### The safety rails, since the repo is called `virus`
-
-- No writes outside this repo. **None.** Nothing is created, so there is
-  nothing to clean up.
-- No self-replication. Ever. Act 3 is `print()` in a loop.
-- No network, no subprocess, no registry, no startup entry, no persistence.
-- The only syscall that touches your machine is one `os.listdir('.')`, for
-  a flavor line that counts files it will not open.
-- `finally:` restores your cursor and colors on Ctrl-C. Always.
-- `python virus.py --check` asserts all of it and prints
-  `ok: 4 acts, terminal restored, 0 files harmed`.
-
-## The bassline
-
-`winsound.Beep` on a daemon thread — a four-note riff at 90bpm that sounds
+`winsound.Beep` on a daemon thread. A four-note riff at 90bpm that sounds
 like a 1997 shareware installer, which is the correct sound for this. Windows
 only; elsewhere the import fails, audio goes quiet, everything else runs.
 
-`music.py` writes the same riff out as **`virus.mid`** (bass + drums, 13
-seconds, 1 KB), so you can loop it in anything:
+`music.py` writes the riff out as **`virus.mid`** (bass + drums, 13 seconds,
+1 KB) with hand-rolled `struct.pack` and no MIDI library. The notes are
+original — see the Notice.
 
-```bash
-python music.py            # -> virus.mid
+## How it is put together
+
+```
+deltron.py     the umbrella. runpy, not a plugin system
+theater.py     the shared stage: typewriter, sleeps, terminal restore
+virus.py       track 5
+upgrade.py     track 12
+slipping.py    track 10
+y3k.py         track 2
+music.py       writes virus.mid
+lyrics.txt     act 4 of virus scrolls whatever is in here
+changelog.txt  the filler upgrade.py reads
+docs/demo.py   makes the GIF above, with termshot
 ```
 
-Hand-rolled `struct.pack`, no MIDI library. The riff lives in `virus.py` and
-`music.py` imports it, so there is one copy of the notes.
+`theater.py` was extracted at the **fourth** track, not the first — three
+programs had grown their own copy by then, which is when you know what the
+shared thing actually is. The third track (`y3k.py`) turned out not to want
+it at all, being a linter rather than an animation.
+
+The GIF is not a screen recording — it is
+[termshot](https://github.com/sp00nznet/termshot), which fakes terminal
+captures with Pillow. Faking a demo of a fake virus felt correct.
 
 ## Binaries
 
-PyInstaller can't cross-compile, so `.github/workflows/build.yml` builds on
-one runner per platform and uploads `virus` / `virus.exe` on any `v*` tag.
-The mac build is unsigned — right-click → Open the first time, or
-`xattr -d com.apple.quarantine virus`.
+PyInstaller cannot cross-compile, so
+[`.github/workflows/build.yml`](.github/workflows/build.yml) builds on one
+runner per platform and uploads `deltron` / `deltron.exe` on any `v*` tag.
+The macOS build is arm64 and unsigned — right-click → Open the first time, or
+`xattr -d com.apple.quarantine deltron`.
 
-You don't need any of that: `virus.py` is stdlib-only with a shebang, so
-`chmod +x virus.py && ./virus.py` already works everywhere.
-
-## Files
-
-```
-virus.py      the whole program
-music.py      writes virus.mid
-lyrics.txt    the verse. act 4 scrolls whatever is in here
-SPEC.md       what we decided before writing it
-docs/demo.py  makes the GIF above, with termshot
-```
-
-The GIF is not a screen recording — it's [termshot](https://github.com/sp00nznet/termshot),
-which fakes terminal captures with Pillow. Faking a demo of a fake virus felt
-correct.
-
-`lyrics.txt` ships a four-line excerpt on purpose. Paste the rest in
-yourself; act 4 reads the file, not the code.
-
-## Other tracks
-
-The album, not the track. Same repo, one file per song.
-
-**`upgrade.py`** — _Upgrade (A Brand New Day)_. An upgrade process that is
-flawless, thorough, patient, beautifully instrumented, and changes nothing. It
-downloads nothing, migrates config into itself, restarts into the identical
-screen, and reports success. The version goes up, the feature count goes down,
-and the last line is `0 files changed` — which is a true statement about the
-program, not a bit.
-
-```bash
-python upgrade.py             # the full bit, ~40s
-python upgrade.py --rollback  # the truest line in the program
-```
-
-`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
-kept to the letter that means nothing. Same joke from the other end.
-
-**`y3k.py`** — _3030_. A Y3K compliance checker, and the only thing in this
-repo that does something real. It scans for date handling that will not
-survive the year 3030 — two-digit years, 32-bit clocks, regexes that only
-match years starting 1 or 2 — and reports each one with the year it actually
-breaks in. Exits 1 on findings, so it works in CI, which is an absurd thing
-for this repo to be able to say.
-
-```bash
-python y3k.py             # scan the current directory
-python y3k.py path/to/src
-```
-
-The 2038 and two-digit-year findings are genuine bugs with genuine dates
-attached. The Y10K rule is not, and is marked LOW accordingly.
-
-**`slipping.py`** — _Time Keeps On Slipping_. A clock that is correct when it
-starts and is not correct for long. The drift is exponential, so the first
-half minute looks fine, a minute in you are a couple of minutes fast, three
-minutes in you are weeks ahead, and around minute five it arrives in 3030 and
-stops.
-
-```bash
-python slipping.py             # ~5 min to 3030
-python slipping.py --drift 4   # slip sooner (time constant, seconds)
-```
-
-`--drift` is the calibration knob. The default is tuned so the slip is
-invisible exactly long enough to be annoying.
-
-Planned, in [SPEC.md](SPEC.md): the code-breaking game (_Mastermind_).
-
-## Credit
-
-Deltron 3030 — Del the Funky Homosapien, Dan the Automator, Kid Koala.
-Go buy the album. It's better than this.
+You do not need any of that. Every track is stdlib-only Python with a
+shebang, so `./deltron.py virus` already works everywhere.
 
 ## Notice
 
@@ -178,12 +184,18 @@ is one of the best records ever built.
 - **The lyrics** are a four-line excerpt, quoted with attribution, in a
   project that exists to comment on those four lines. Rights remain with
   their owners. Don't paste the full verse into the repo.
-- **The music is original.** `RIFF` is four notes written to sound like a
+- **The music is original.** The riff is four notes written to sound like a
   1997 shareware installer. It is not a transcription of, sample of, or
   derivative of the album's instrumental.
 - **The code** is free to take. The song isn't ours to give.
 
 ## License
 
-MIT for everything in this repo — code, `virus.mid`, docs. See [LICENSE](LICENSE),
-which carves out the quoted lyrics: those aren't ours to license to you.
+MIT for everything in this repo — code, `virus.mid`, docs. See
+[LICENSE](LICENSE), which carves out the quoted lyrics: those aren't ours to
+license to you.
+
+## Credit
+
+Deltron 3030 — Del the Funky Homosapien, Dan the Automator, Kid Koala.
+Go buy the album. It's better than this.

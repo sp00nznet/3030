@@ -19,6 +19,8 @@ import sys
 import time
 from datetime import datetime, timedelta
 
+from theater import CLEAR, EOL, ESC, HIDE, HOME, RESET, restore, w
+
 TAU = 12.4          # seconds. The knob. Smaller slips sooner.
 TARGET_YEAR = 3030
 FPS = 10
@@ -30,8 +32,6 @@ EOL = ESC + "K"
 DIM = ESC + "38;5;245m"
 CYAN = ESC + "38;5;44m"
 WHITE = ESC + "38;5;255m"
-RESET = ESC + "0m"
-HIDE, SHOW = ESC + "?25l", ESC + "?25h"
 
 # ponytail: block char where the console can encode it, '#' where it cannot.
 BLOCK = "█"
@@ -103,22 +103,20 @@ def main(tau=TAU):
     start, t0 = datetime.now(), time.monotonic()
     off = 0.0
     try:
-        sys.stdout.write(CLEAR + HIDE)
+        w(CLEAR + HIDE)
         while True:
             elapsed = time.monotonic() - t0
             cap = (datetime(TARGET_YEAR, 1, 1) - start).total_seconds()
             off = min(slip(elapsed, tau), cap)
             lines, done = frame(start, elapsed, tau)
-            sys.stdout.write(HOME + "\n".join(ln + EOL for ln in lines))
-            sys.stdout.flush()
+            w(HOME + "\n".join(ln + EOL for ln in lines))
             if done:
                 break
             time.sleep(1.0 / FPS)
     except KeyboardInterrupt:
         pass
     finally:
-        sys.stdout.write(RESET + SHOW + "\n")
-        sys.stdout.flush()
+        restore()
         print(f"  It slipped {human(off)} in {human(time.monotonic() - t0)}.")
 
 

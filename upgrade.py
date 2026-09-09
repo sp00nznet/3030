@@ -14,55 +14,25 @@ the letter that means nothing. Same joke from the other end.
 """
 import io
 import os
-import shutil
 import sys
 import threading
-import time
 from contextlib import redirect_stdout
 
+import theater
+from theater import CLEAR, ESC, HIDE, RESET, SHOW, nap, size, type_out, w
+
 HERE = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
-FAST = "--fast" in sys.argv
 MUTE = "--mute" in sys.argv
 
-ESC = "\033["
 BLUE = ESC + "38;5;39m"
 WHITE = ESC + "38;5;255m"
 DIM = ESC + "38;5;245m"
 OK = ESC + "38;5;42m"
 WARN = ESC + "38;5;214m"
-RESET = ESC + "0m"
-CLEAR = ESC + "2J" + ESC + "H"
-HIDE, SHOW = ESC + "?25l", ESC + "?25h"
 
 FROM_V, TO_V = "v3030.1", "v3030.2"
 FEATURES_BEFORE, FEATURES_AFTER = 47, 46
 SIZE = "1,204 MiB"
-
-# ponytail: these four are copied from virus.py, not extracted. Two callers is
-# not a pattern -- theater.py at the third track. See SPEC.md.
-
-
-def w(s):
-    sys.stdout.write(s)
-    sys.stdout.flush()
-
-
-def nap(t):
-    if not FAST:
-        time.sleep(t)
-
-
-def size():
-    c = shutil.get_terminal_size((80, 24))
-    return c.columns, c.lines
-
-
-def type_out(s, cps=45, end="\n"):
-    for ch in s:
-        w(ch)
-        nap(1.0 / cps)
-    w(end)
-
 
 def changelog():
     """'#' lines are notes to whoever edits the file, not changelog entries."""
@@ -175,7 +145,7 @@ def act_migrate():
     frames = "|/-" + chr(92)
     w("\n")
     for label, secs, kind in STEPS:
-        n = 1 if FAST else max(4, int(secs / 0.12))
+        n = 1 if theater.FAST else max(4, int(secs / 0.12))
         for i in range(n):
             w("\r  [" + DIM + frames[i % 4] + RESET + "] " + label)
             nap(0.12)
@@ -214,7 +184,7 @@ def act_restart():
 
 
 def main():
-    if not MUTE and not FAST:
+    if not MUTE and not theater.FAST:
         threading.Thread(target=chime, daemon=True).start()
     try:
         act_check()
@@ -231,8 +201,9 @@ def _ver(s):
 
 def demo():
     """One assert per act, plus the ones that protect the joke."""
-    global FAST, MUTE
-    FAST = MUTE = True
+    global MUTE
+    MUTE = True
+    theater.fast(True)
     buf = io.StringIO()
     with redirect_stdout(buf):
         main()

@@ -83,6 +83,14 @@ def scan_text(text, path="<text>"):
     return out
 
 
+def _rel(path):
+    """Relative where it can be. On Windows, relpath dies across drives."""
+    try:
+        return os.path.relpath(path)
+    except ValueError:
+        return path
+
+
 def scan_path(root):
     findings, files = [], 0
     if os.path.isfile(root):
@@ -101,7 +109,7 @@ def scan_path(root):
         except (OSError, UnicodeDecodeError):
             continue  # binary, unreadable, or gone. Not our problem
         files += 1
-        findings += scan_text(text, os.path.relpath(p, os.curdir))
+        findings += scan_text(text, _rel(p))
     return findings, files
 
 
@@ -150,6 +158,7 @@ def demo():
     assert not any(f[5].startswith("skipped") for f in found), "'y3k: ignore' was not honored"
     assert not scan_text("clean = 1\nx = 'nothing'\n"), "false positive on clean code"
     assert severity(2038) == "CRITICAL" and severity(10000) == "LOW", "severity is off"
+    assert _rel("Z:\\elsewhere\\x.py"), "relpath must survive a path on another drive"
     with redirect_stdout(io.StringIO()):
         assert report([], 0, ".") == 0 and report(found, 1, ".") == 1, "wrong exit codes"
     print(f"ok: {len(RULES)} rules, {len(found)} findings on the fixture, ignore honored")
