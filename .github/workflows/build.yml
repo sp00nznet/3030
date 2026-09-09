@@ -1,0 +1,38 @@
+# Binaries for the three platforms. PyInstaller cannot cross-compile, so the
+# only honest way to get a mac/linux build from a Windows box is a runner that
+# already is one.
+name: build
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyinstaller
+      - name: self-check
+        run: |
+          python virus.py --check
+          python music.py --check
+      - name: build
+        shell: bash
+        run: |
+          SEP=":"; [ "${{ runner.os }}" = "Windows" ] && SEP=";"
+          pyinstaller --onefile --name virus --add-data "lyrics.txt${SEP}." virus.py
+      - name: smoke test the binary
+        shell: bash
+        run: ./dist/virus --check || ./dist/virus.exe --check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: virus-${{ matrix.os }}
+          path: dist/virus*
