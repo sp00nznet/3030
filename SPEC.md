@@ -122,7 +122,7 @@ different angles, and each one is a small terminal program:
 | Virus | `virus.py` — a threat that cannot be carried out |
 | Upgrade (A Brand New Day) | `upgrade.py` — a promise kept to the letter, meaning nothing. See [SPEC-upgrade.md](SPEC-upgrade.md) |
 | 3030 | `y3k.py` — a Y3K compliance checker. The only one that is faintly useful |
-| Time Keeps On Slipping | a clock that drifts |
+| Time Keeps On Slipping | `slipping.py` — a clock that drifts, exponentially, into 3030 |
 | Mastermind | the actual code-breaking game |
 | Turbulence | a network path degrading in front of you |
 

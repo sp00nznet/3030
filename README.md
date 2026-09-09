@@ -146,8 +146,21 @@ python y3k.py path/to/src
 The 2038 and two-digit-year findings are genuine bugs with genuine dates
 attached. The Y10K rule is not, and is marked LOW accordingly.
 
-Planned, in [SPEC.md](SPEC.md): a clock that drifts (_Time Keeps On
-Slipping_), the code-breaking game (_Mastermind_).
+**`slipping.py`** — _Time Keeps On Slipping_. A clock that is correct when it
+starts and is not correct for long. The drift is exponential, so the first
+half minute looks fine, a minute in you are a couple of minutes fast, three
+minutes in you are weeks ahead, and around minute five it arrives in 3030 and
+stops.
+
+```bash
+python slipping.py             # ~5 min to 3030
+python slipping.py --drift 4   # slip sooner (time constant, seconds)
+```
+
+`--drift` is the calibration knob. The default is tuned so the slip is
+invisible exactly long enough to be annoying.
+
+Planned, in [SPEC.md](SPEC.md): the code-breaking game (_Mastermind_).
 
 ## Credit
 

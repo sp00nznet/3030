@@ -25,6 +25,7 @@ jobs:
           python virus.py --check
           python upgrade.py --check
           python y3k.py --check
+          python slipping.py --check
           python music.py --check
       - name: build
         shell: bash
