@@ -111,3 +111,32 @@ act. No framework.
 - curses. ANSI is enough.
 - Any actual virus behavior. Obviously.
 - Going public with full lyrics in the repo. Strip them first if it ever does.
+
+## Where this is going
+
+The album, not the track. Other songs on 3030 describe the same collapse from
+different angles, and each one is a small terminal program:
+
+| Track | Program |
+|---|---|
+| Virus | `virus.py` — a threat that cannot be carried out |
+| Upgrade (A Brand New Day) | `upgrade.py` — a promise kept to the letter, meaning nothing. See [SPEC-upgrade.md](SPEC-upgrade.md) |
+| 3030 | a Y3K compliance checker. The only one that is faintly useful |
+| Time Keeps On Slipping | a clock that drifts |
+| Mastermind | the actual code-breaking game |
+| Turbulence | a network path degrading in front of you |
+
+**One repo, one file per track.** No repo per song, no package per song.
+`virus.py` keeps its name — it's track 5, not the project.
+
+**The repo gets renamed to `3030`** once enough tracks exist to earn it.
+GitHub redirects the old URL, remotes, and release assets, so the rename is
+cheap and nothing breaks — which is why it can wait until it's obviously right
+rather than being done now on spec.
+
+Two structural rules, so this doesn't turn into a framework:
+
+- **No `theater.py` until the third track.** Copy the four helpers. Two
+  callers is not a pattern; extract when the third one shows what it needed.
+- **No `deltron <track>` umbrella CLI until the fourth.** Worth it at four,
+  premature at two.

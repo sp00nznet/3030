@@ -112,6 +112,28 @@ correct.
 `lyrics.txt` ships a four-line excerpt on purpose. Paste the rest in
 yourself; act 4 reads the file, not the code.
 
+## Other tracks
+
+The album, not the track. Same repo, one file per song.
+
+**`upgrade.py`** — _Upgrade (A Brand New Day)_. An upgrade process that is
+flawless, thorough, patient, beautifully instrumented, and changes nothing. It
+downloads nothing, migrates config into itself, restarts into the identical
+screen, and reports success. The version goes up, the feature count goes down,
+and the last line is `0 files changed` — which is a true statement about the
+program, not a bit.
+
+```bash
+python upgrade.py             # the full bit, ~40s
+python upgrade.py --rollback  # the truest line in the program
+```
+
+`virus.py` is a threat that cannot be carried out. `upgrade.py` is a promise
+kept to the letter that means nothing. Same joke from the other end.
+
+Planned, in [SPEC.md](SPEC.md): a Y3K compliance checker (_3030_), a clock that
+drifts (_Time Keeps On Slipping_), the code-breaking game (_Mastermind_).
+
 ## Credit
 
 Deltron 3030 — Del the Funky Homosapien, Dan the Automator, Kid Koala.

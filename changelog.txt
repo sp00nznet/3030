@@ -1,0 +1,9 @@
+Improved performance.
+Various bug fixes and stability improvements.
+Refreshed the icon.
+Settings has been renamed to Preferences.
+New: Preferences.
+Removed: batch rename.
+
+# Lines starting with '#' are not shown as changelog entries.
+# Act 1 reads this file, so the filler is tunable without touching code.
