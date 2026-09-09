@@ -66,9 +66,32 @@ def check_all():
         print(f"  {mod:<10} {line[0]}")
         if r.returncode:
             failed.append(mod)
+    docs = check_docs(here)
     print()
-    print(f"  {len(CHECKS) - len(failed)}/{len(CHECKS)} passed" + (f", failed: {failed}" if failed else ""))
-    return 1 if failed else 0
+    print(f"  {len(CHECKS) - len(failed)}/{len(CHECKS)} passed"
+          + (f", failed: {failed}" if failed else "") + (f"\n  {docs}" if docs else ""))
+    return 1 if failed or docs else 0
+
+
+def check_docs(here):
+    """Every track must appear in the README's tracklist and file listing.
+
+    Hand-kept lists drift: the hero GIF still showed six tracks after seven
+    more had shipped, and the build's module list went stale every time. This
+    is the same failure, caught here instead of by a reader.
+    """
+    path = os.path.join(here, "README.md")
+    if not os.path.exists(path):
+        return ""                      # a frozen binary ships no README
+    with open(path, encoding="utf-8") as f:
+        readme = f.read()
+    missing = []
+    for mod, no, title, _ in TRACKS:
+        if f"### {no}. " not in readme:
+            missing.append(f"{mod} (no '### {no}.' section)")
+        elif f"{mod}.py" not in readme:
+            missing.append(f"{mod} (not in the file listing)")
+    return f"README is missing: {', '.join(missing)}" if missing else ""
 
 
 if __name__ == "__main__":

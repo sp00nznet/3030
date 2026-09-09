@@ -346,15 +346,25 @@ Notice.
 deltron.py     the umbrella. runpy, not a plugin system
 theater.py     the shared stage: typewriter, sleeps, terminal restore
 audio.py       the cues, and WAV playback on all three platforms
-virus.py       track 7
-mastermind.py  track 10
-upgrade.py     track 8
-slipping.py    track 14
-turbulence.py  track 16
-y3k.py         track 2
 music.py       writes midi/*.mid, one per track
+
+y3k.py         track 2
+things.py      track 4
+contact.py     track 5
+virus.py       track 7
+upgrade.py     track 8
+newcoke.py     track 9
+mastermind.py  track 10
+madness.py     track 12
+slipping.py    track 14
+news.py        track 15
+turbulence.py  track 16
+battlesong.py  track 18
+memory.py      track 20
+
 lyrics.txt     act 4 of virus scrolls whatever is in here
 changelog.txt  the filler upgrade.py reads
+midi/          one .mid per track, written by music.py
 docs/demos.py  makes every image above, with termshot
 ```
 
